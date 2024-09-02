@@ -6,7 +6,7 @@
 
 html,
 body {
-  background-color: #0F0F11;
+  background-color: #ff0072;
   font-family: "PingFang SC";
 }
 
@@ -36,7 +36,7 @@ a {
 }
 
 .ant-select-dropdown {
-  background-color: #1E2024 !important;
+  background-color: #1e241e !important;
 }
 
 .ant-select-item {
@@ -46,7 +46,7 @@ a {
 
 .ant-select-item-option-selected {
   background: #272A2F !important;
-  color: var(--Grey-300, #EAECF0) !important;
+  color: var(--Grey-300, #FFC0CB) !important;
 }
 
 

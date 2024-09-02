@@ -7,11 +7,9 @@ import { rtcManager, IUserTracks, IRtcUser } from "@/manager"
 import { setRoomConnected, addChatItem, setVoiceType } from "@/store/reducers/global"
 import MicSection from "./micSection"
 import CamSection from "./camSection"
-import Agent from "./agent"
+//import Agent from "./agent"
 import styles from "./index.module.scss"
 import { useRef, useEffect, useState, Fragment } from "react"
-import { VoiceIcon } from "@/components/icons"
-import CustomSelect from "@/components/customSelect"
 
 let hasInit = false
 
@@ -97,30 +95,17 @@ const Rtc = () => {
     }
   }
 
-  const onVoiceChange = (value: any) => {
-    dispatch(setVoiceType(value))
-  }
 
 
   return <section className={styles.rtc}>
-    <div className={styles.header}>
-      <span className={styles.text}>Audio & Video</span>
-      <CustomSelect className={styles.voiceSelect}
-        disabled={agentConnected}
-        value={voiceType}
-        prefixIcon={<VoiceIcon></VoiceIcon>}
-        options={VOICE_OPTIONS} onChange={onVoiceChange}></CustomSelect>
-    </div>
-    {/* agent */}
-    <Agent audioTrack={remoteuser?.audioTrack}></Agent>
-    {/* you */}
+
     <div className={styles.you}>
-      <div className={styles.title}>You</div>
       {/* microphone */}
       <MicSection audioTrack={audioTrack}></MicSection>
       {/* camera */}
       <CamSection videoTrack={videoTrack}></CamSection>
     </div>
+    
   </section>
 }
 

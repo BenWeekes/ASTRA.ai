@@ -1,13 +1,21 @@
 import { setAgentConnected } from "@/store/reducers/global"
 import {
-  DESCRIPTION, useAppDispatch, useAppSelector, apiPing, genUUID,
+  DESCRIPTION, useAppDispatch, useAppSelector, VOICE_OPTIONS,apiPing, genUUID,
   apiStartService, apiStopService,
-  getGraphProperties
+  getGraphProperties,
+  LANGUAGE_OPTIONS,
+  GRAPH_OPTIONS,
+  isRagGraph,
 } from "@/common"
 import { Select, Button, message, Upload } from "antd"
 import { useEffect, useState, MouseEventHandler } from "react"
 import { LoadingOutlined, UploadOutlined } from "@ant-design/icons"
 import styles from "./index.module.scss"
+import CustomSelect from "@/components/customSelect"
+import { VoiceIcon } from "@/components/icons"
+import { setVoiceType } from "@/store/reducers/global"
+import { setGraphName, setLanguage } from "@/store/reducers/global"
+import PdfSelect from "@/components/pdfSelect"
 
 let intervalId: any
 
@@ -84,10 +92,41 @@ const Description = () => {
       intervalId = null
     }
   }
+  const onVoiceChange = (value: any) => {
+    dispatch(setVoiceType(value))
+  }
+
+  const onGraphNameChange = (val: any) => {
+    dispatch(setGraphName(val))
+  }
+
+  const onLanguageChange = (val: any) => {
+    dispatch(setLanguage(val))
+  }
+
 
   return <div className={styles.description}>
-    <span className={styles.title}>Description</span>
-    <span className={styles.text}>Astra is a multimodal agent powered by TEN</span>
+  
+    <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
+    <CustomSelect className={styles.voiceSelect}
+        disabled={agentConnected}
+        value={voiceType}
+        prefixIcon={<VoiceIcon></VoiceIcon>}
+        options={VOICE_OPTIONS} onChange={onVoiceChange}></CustomSelect>
+
+    <span className={styles.left}>
+      </span>
+      <span className={styles.right}>
+        <Select className={styles.graphName}
+          disabled={agentConnected} options={GRAPH_OPTIONS}
+          value={graphName} onChange={onGraphNameChange}></Select>
+        <Select className={styles.languageSelect}
+          disabled={agentConnected} options={LANGUAGE_OPTIONS}
+          value={language} onChange={onLanguageChange}></Select>
+        {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
+      </span>
+
+
     <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''}`} onClick={onClickConnect}>
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
         {!agentConnected ? "Connect" : "Disconnect"}

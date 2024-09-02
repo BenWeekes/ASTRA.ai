@@ -4,7 +4,7 @@ import packageData from "../../../package.json"
 import { useRouter } from 'next/navigation'
 import { message } from "antd"
 import { useState } from "react"
-import { GithubIcon, LogoIcon } from "../icons"
+import { GithubIcon, HeartIcon, LogoIcon } from "../icons"
 import { GITHUB_URL, getRandomUserId, useAppDispatch, getRandomChannel } from "@/common"
 import { setOptions } from "@/store/reducers/global"
 import styles from "./index.module.scss"
@@ -33,7 +33,7 @@ const LoginCard = () => {
 
   const onClickJoin = () => {
     if (!userName) {
-      message.error("please input user name")
+      message.error("please input your name")
       return
     }
     const userId = getRandomUserId()
@@ -55,18 +55,18 @@ const LoginCard = () => {
     </section>
     <section className={styles.content}>
       <div className={styles.title}>
-        <LogoIcon transform="scale(1.5 1.5)"></LogoIcon>
-        <span className={styles.text}>Astra - a multimodal interactive agent</span>
+        <HeartIcon transform="scale(1.5 1.5)"></HeartIcon>
+        <span className={styles.text}>Aime <br></br> Your virtual companion</span>
       </div>
       <div className={styles.section}>
-        <input placeholder="User Name" value={userName} onChange={onUserNameChange} ></input>
+        <input placeholder="Name" value={userName} onChange={onUserNameChange} ></input>
       </div>
       <div className={styles.section}>
         <div className={styles.btn} onClick={onClickJoin}>
-          <span className={styles.btnText}>Join</span>
+          <span className={styles.btnText}>Enter</span>
         </div>
       </div>
-      <div className={styles.version}>Version {version}</div>
+      <div className={styles.version}>Hackathon 2024</div>
     </section >
   </div >
 

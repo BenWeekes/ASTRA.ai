@@ -61,7 +61,7 @@ const MicSection = (props: MicSectionProps) => {
         type="user"
         barWidth={4}
         minBarHeight={2}
-        maxBarHeight={50}
+        maxBarHeight={20}
         frequencies={subscribedVolumes}
         borderRadius={2}
         gap={4}></AudioVisualizer>

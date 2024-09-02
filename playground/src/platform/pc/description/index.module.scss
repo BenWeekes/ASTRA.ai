@@ -1,7 +1,7 @@
 .description {
   position: relative;
   display: flex;
-  padding: 12px 16px;
+  padding: 2px 4px;
   align-items: center;
   gap: 12px;
   align-self: stretch;
@@ -10,7 +10,7 @@
   background: #181A1D;
 
   .title {
-    color: var(--Grey-300, #EAECF0);
+    color: var(--Grey-300, #f40a64);
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -21,7 +21,7 @@
   .text {
     margin-left: 12px;
     flex: 1 1 auto;
-    color: var(--Grey-600, #667085);
+    color: var(--Grey-600, pink);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -37,8 +37,8 @@
     gap: 8px;
     align-self: stretch;
     border-radius: 6px;
-    background: var(--theme-color, #0888FF);
-    border: 1px solid var(--theme-color, #0888FF);
+    background: var(--theme-color, #f40a64);
+    border: 1px solid var(--theme-color, #f40a64);
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     cursor: pointer;
     user-select: none;

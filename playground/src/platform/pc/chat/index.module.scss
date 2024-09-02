@@ -1,6 +1,7 @@
 .chat {
   flex: 1 1 auto;
-  min-width: 500px;
+  flex-grow: 1;
+  min-width: 100px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -9,6 +10,9 @@
   border: 1px solid #272A2F;
   background: #181A1D;
   overflow: hidden;
+  min-height: 200px;
+  height: 200px;
+  margin-bottom: 10px;
 
   .header {
     display: flex;
@@ -26,7 +30,7 @@
 
       .text {
         margin-left: 4px;
-        color: var(--Grey-300, #EAECF0);
+        color: var(--Grey-300, #FFC0CB);
         font-size: 14px;
         font-weight: 600;
         height: 40px;
@@ -44,7 +48,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex: 0 0 230px;
+      flex: 0 0 130px;
       justify-content: right;
     }
 
@@ -56,7 +60,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    flex: 1 0 500px;
+    flex: 1 0 100px;
     align-self: stretch;
     overflow-y: auto;
 

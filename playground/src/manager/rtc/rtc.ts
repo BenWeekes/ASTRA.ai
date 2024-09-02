@@ -34,7 +34,8 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       }
       const { appId, token } = data
       await this.client?.join(appId, channel, token, userId)
-      this._joined = true
+      window.bwc=this.client;
+      this._joined = true;
     }
   }
 

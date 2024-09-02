@@ -1,7 +1,7 @@
 .agent {
   position: relative;
   display: flex;
-  height: 292px;
+  flex-grow: 1;
   padding: 20px 16px;
   flex-direction: column;
   justify-content: flex-start;
@@ -11,10 +11,12 @@
   box-shadow: 0px 3.999px 48.988px 0px rgba(0, 7, 72, 0.12);
   backdrop-filter: blur(7);
   box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #272A2F;
 
   .text {
     margin-top: 50px;
-    color: var(--theme-color, #EAECF0);
+    color: var(--theme-color, #FFC0CB);
     font-size: 24px;
     font-weight: 600;
     line-height: 150%;

@@ -22,7 +22,7 @@ const Agent = (props: AgentProps) => {
         frequencies={subscribedVolumes}
         barWidth={6}
         minBarHeight={6}
-        maxBarHeight={56}
+        maxBarHeight={28}
         borderRadius={2}
         gap={6}></AudioVisualizer>
     </div>
