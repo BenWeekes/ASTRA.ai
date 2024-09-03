@@ -51,14 +51,14 @@ const Description = () => {
     if (agentConnected) {
       await apiStopService(channel)
       dispatch(setAgentConnected(false))
-      message.success("Agent disconnected")
+      message.success("Amie disconnected")
       stopPing()
     } else {
       const res = await apiStartService({
         channel,
         userId,
         graphName,
-        properties: getGraphProperties(graphName, language, voiceType)
+        properties: getGraphProperties(graphName, language, 'female')
       })
       const { code, msg } = res || {}
       if (code != 0) {
@@ -71,7 +71,7 @@ const Description = () => {
         throw new Error(msg)
       }
       dispatch(setAgentConnected(true))
-      message.success("Agent connected")
+      message.success("Amie connected")
       startPing()
     }
     setLoading(false)
@@ -108,21 +108,24 @@ const Description = () => {
   return <div className={styles.description}>
   
     <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
+      {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}
         value={voiceType}
         prefixIcon={<VoiceIcon></VoiceIcon>}
         options={VOICE_OPTIONS} onChange={onVoiceChange}></CustomSelect>
-
+   */}
     <span className={styles.left}>
       </span>
       <span className={styles.right}>
         <Select className={styles.graphName}
           disabled={agentConnected} options={GRAPH_OPTIONS}
           value={graphName} onChange={onGraphNameChange}></Select>
+      
         <Select className={styles.languageSelect}
           disabled={agentConnected} options={LANGUAGE_OPTIONS}
           value={language} onChange={onLanguageChange}></Select>
+       
         {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
       </span>
 

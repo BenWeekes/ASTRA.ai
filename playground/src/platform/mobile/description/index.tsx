@@ -43,7 +43,7 @@ const Description = () => {
     if (agentConnected) {
       await apiStopService(channel)
       dispatch(setAgentConnected(false))
-      message.success("Agent disconnected")
+      message.success("Amie disconnected")
       stopPing()
     } else {
       const res = await apiStartService({
@@ -63,7 +63,7 @@ const Description = () => {
         throw new Error(msg)
       }
       dispatch(setAgentConnected(true))
-      message.success("Agent connected")
+      message.success("Amie connected")
       startPing()
     }
     setLoading(false)
@@ -86,7 +86,7 @@ const Description = () => {
   }
 
   return <div className={styles.description}>
-    <span className={styles.title}>Description</span>
+    <span className={styles.title}>Aime 2024</span>
     <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''}`} onClick={onClickConnect}>
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
         {!agentConnected ? "Connect" : "Disconnect"}

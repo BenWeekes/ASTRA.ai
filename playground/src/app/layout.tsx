@@ -6,8 +6,8 @@ import './global.css'
 
 
 export const metadata: Metadata = {
-  title: "Astra.ai",
-  description: "A multimodal agent powered by TEN",
+  title: "Amie 2024",
+  description: "Your virtual companion",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black",

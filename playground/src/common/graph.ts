@@ -45,7 +45,7 @@ export const voiceNameMap: LanguageMap = {
 
 export const getGraphProperties = (graphName: string, language: string, voiceType: string) => {
     let localizationOptions = {
-        "greeting": "ASTRA agent connected. How can i help you today?",
+        "greeting": "Hey there. How are you today?",
         "checking_vision_text_items": "[\"Let me take a look...\",\"Let me check your camera...\",\"Please wait for a second...\"]",
     }
 

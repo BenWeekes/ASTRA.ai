@@ -16,7 +16,6 @@ const MenuData: IMenuData[] = [{
 
 
 const MobileEntry = () => {
-
   return <div className={styles.entry}>
     <Header></Header>
     <Description></Description>

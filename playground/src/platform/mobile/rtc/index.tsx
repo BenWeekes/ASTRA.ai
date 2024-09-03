@@ -103,22 +103,11 @@ const Rtc = () => {
 
 
   return <section className={styles.rtc}>
-    <div className={styles.header}>
-      <span className={styles.text}>Audio & Video</span>
-      <CustomSelect className={styles.voiceSelect}
-        value={voiceType}
-        disabled={agentConnected}
-        prefixIcon={<VoiceIcon></VoiceIcon>}
-        options={VOICE_OPTIONS} onChange={onVoiceChange}></CustomSelect>
-    </div>
-    {/* agent */}
     <Agent audioTrack={remoteuser?.audioTrack}></Agent>
-    {/* you */}
     <div className={styles.you}>
-      <div className={styles.title}>You</div>
-      {/* microphone */}
+      {/*
       <MicSection audioTrack={audioTrack}></MicSection>
-      {/* camera */}
+      */}
       <CamSection videoTrack={videoTrack}></CamSection>
     </div>
   </section>

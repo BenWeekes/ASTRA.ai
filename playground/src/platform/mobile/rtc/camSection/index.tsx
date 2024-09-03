@@ -25,6 +25,7 @@ const CamSection = (props: CamSectionProps) => {
   }
 
   return <div className={styles.camera}>
+    {/*
     <div className={styles.title}>CAMERA</div>
     <div className={styles.select}>
       <span className={styles.iconWrapper} onClick={onClickMute}>
@@ -32,6 +33,8 @@ const CamSection = (props: CamSectionProps) => {
       </span>
       <CamSelect videoTrack={videoTrack}></CamSelect>
     </div>
+
+*/}
     <div className={styles.view}>
       <LocalStreamPlayer videoTrack={videoTrack}></LocalStreamPlayer>
     </div>
