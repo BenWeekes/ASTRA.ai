@@ -10,3 +10,6 @@ then to build and run
 npm i     
 npm build       
 npm run start     
+
+
+You should now be able to access the client on http://localhost:3000/ai-agent/    
