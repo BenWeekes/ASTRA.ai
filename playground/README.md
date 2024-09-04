@@ -1,4 +1,4 @@
-add .env file with the following contents in this folder     
+add a .env file with the following contents in this folder     
 ```    
 NEXT_PUBLIC_REQUEST_URL=https://sa-astra.agora.io
 NEXT_PUBLIC_trulienceSDK=https://digitalhuman.uk/home/assets/trulience.sdk.js
