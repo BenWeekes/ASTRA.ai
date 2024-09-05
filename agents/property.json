@@ -1371,7 +1371,7 @@
                     {
                         "type": "extension",
                         "extension_group": "asr",
-                        "addon": "transcribe_asr",
+                        "addon": "transcribe_asr_python",
                         "name": "transcribe_asr",
                         "property": {
                             "region": "us-east-1",

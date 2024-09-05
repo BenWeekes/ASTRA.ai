@@ -1,12 +1,12 @@
-import { AnyObject } from "antd/es/_util/type"
-import { REQUEST_URL } from "./constant"
 import { genUUID } from "./utils"
+import { Language } from "@/types"
 
 interface StartRequestConfig {
   channel: string
   userId: number,
-  graphName: string
-  properties: AnyObject
+  graphName: string,
+  language: Language,
+  voiceType: "male" | "female"
 }
 
 interface GenAgoraDataConfig {
@@ -15,7 +15,8 @@ interface GenAgoraDataConfig {
 }
 
 export const apiGenAgoraData = async (config: GenAgoraDataConfig) => {
-  const url = `${REQUEST_URL}/token/generate`
+  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  const url = `/api/token/generate`
   const { userId, channel } = config
   const data = {
     request_id: genUUID(),
@@ -34,15 +35,16 @@ export const apiGenAgoraData = async (config: GenAgoraDataConfig) => {
 }
 
 export const apiStartService = async (config: StartRequestConfig): Promise<any> => {
-  const url = `${REQUEST_URL}/start`
-  const { channel, userId, graphName, properties } = config
+  // look at app/api/agents/start/route.tsx for the server-side implementation
+  const url = `/api/agents/start`
+  const { channel, userId, graphName, language, voiceType } = config
   const data = {
     request_id: genUUID(),
     channel_name: channel,
-    openai_proxy_url: "",
-    remote_stream_id: userId,
+    user_uid: userId,
     graph_name: graphName,
-    properties,
+    language,
+    voice_type: voiceType
   }
   let resp: any = await fetch(url, {
     method: "POST",
@@ -56,7 +58,8 @@ export const apiStartService = async (config: StartRequestConfig): Promise<any> 
 }
 
 export const apiStopService = async (channel: string) => {
-  const url = `${REQUEST_URL}/stop`
+  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  const url = `/api/agents/stop`
   const data = {
     request_id: genUUID(),
     channel_name: channel
@@ -73,7 +76,7 @@ export const apiStopService = async (channel: string) => {
 }
 
 export const apiGetDocumentList = async () => {
-  const url = `${REQUEST_URL}/vector/document/preset/list`
+  const url = `/api/vector/document/preset/list`
   let resp: any = await fetch(url, {
     method: "GET",
     headers: {
@@ -88,7 +91,8 @@ export const apiGetDocumentList = async () => {
 }
 
 export const apiUpdateDocument = async (options: { channel: string, collection: string, fileName: string }) => {
-  const url = `${REQUEST_URL}/vector/document/update`
+  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  const url = `/api/vector/document/update`
   const { channel, collection, fileName } = options
   const data = {
     request_id: genUUID(),
@@ -110,7 +114,8 @@ export const apiUpdateDocument = async (options: { channel: string, collection: 
 
 // ping/pong 
 export const apiPing = async (channel: string) => {
-  const url = `${REQUEST_URL}/ping`
+  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  const url = `/api/agents/ping`
   const data = {
     request_id: genUUID(),
     channel_name: channel

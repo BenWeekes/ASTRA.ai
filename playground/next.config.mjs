@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   basePath: '/ai-agent',
   // output: 'export',

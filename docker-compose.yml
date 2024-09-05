@@ -16,12 +16,18 @@ services:
         working_dir: /app
         env_file:
             - .env
+        networks:
+            - astra_network
     astra_playground:
-        image: ghcr.io/ten-framework/astra_playground:v0.4.0-26-g9a72676
+        image: ghcr.io/ten-framework/astra_playground:v0.4.0-43-g20dffe8
         container_name: astra_playground
         restart: always
         ports:
             - "3000:3000"
+        networks:
+            - astra_network
+        environment:
+            - AGENT_SERVER_URL=http://astra_agents_dev:8080
 
     # use this when you want to run the playground in local development mode
     # astra_playground_dev:
@@ -34,8 +40,15 @@ services:
     #     volumes:
     #     - ./:/app
     ten_graph_designer:
-        image: ghcr.io/ten-framework/ten_graph_designer:72db9b2
+        image: ghcr.io/ten-framework/ten_graph_designer:dde0ff1
         container_name: ten_graph_designer
         restart: always
         ports:
             - "3001:3000"
+        networks:
+            - astra_network
+        environment:
+            - TEN_DEV_SERVER_URL=http://astra_agents_dev:49483
+networks:
+  astra_network:
+    driver: bridge
