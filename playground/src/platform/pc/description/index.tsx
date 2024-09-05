@@ -1,11 +1,12 @@
 import { setAgentConnected } from "@/store/reducers/global"
 import {
+
   DESCRIPTION, useAppDispatch, useAppSelector, VOICE_OPTIONS,apiPing, genUUID,
   apiStartService, apiStopService,
-  getGraphProperties,
   LANGUAGE_OPTIONS,
   GRAPH_OPTIONS,
   isRagGraph
+
 } from "@/common"
 import { Select, Button, message, Upload } from "antd"
 import { useEffect, useState, MouseEventHandler } from "react"
@@ -58,12 +59,8 @@ const Description = () => {
         channel,
         userId,
         graphName,
-<<<<<<< HEAD
-        properties: getGraphProperties(graphName, language, 'female')
-=======
         language,
         voiceType
->>>>>>> upstream/main
       })
       const { code, msg } = res || {}
       if (code != 0) {
