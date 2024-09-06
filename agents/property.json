@@ -44,8 +44,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-4o-mini",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
@@ -243,8 +243,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-4o-mini",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
@@ -450,8 +450,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-4o",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "checking_vision_text_items": "[\"Let me take a look...\",\"Let me check your camera...\",\"Please wait for a second...\"]",
@@ -664,8 +664,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-3.5-turbo",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can I help you today?",
                             "max_memory_length": 10
@@ -859,8 +859,8 @@
                             "access_key": "$AWS_ACCESS_KEY_ID",
                             "secret_key": "$AWS_SECRET_ACCESS_KEY",
                             "model": "anthropic.claude-3-5-sonnet-20240620-v1:0",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
                         }
@@ -1023,8 +1023,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-4o-mini",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
@@ -1221,8 +1221,8 @@
                         "property": {
                             "api_key": "$QWEN_API_KEY",
                             "model": "qwen-max",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "max_memory_length": 10
                         }
                     },
@@ -1426,8 +1426,8 @@
                             "access_key": "$AWS_ACCESS_KEY_ID",
                             "secret_key": "$AWS_SECRET_ACCESS_KEY",
                             "model": "anthropic.claude-3-5-sonnet-20240620-v1:0",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
                         }
@@ -1607,8 +1607,8 @@
                             "access_key": "$AWS_ACCESS_KEY_ID",
                             "secret_key": "$AWS_SECRET_ACCESS_KEY",
                             "model": "anthropic.claude-3-5-sonnet-20240620-v1:0",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "max_memory_length": 10
                         }
@@ -1832,8 +1832,8 @@
                             "api_key": "$OPENAI_API_KEY",
                             "frequency_penalty": 0.9,
                             "model": "gpt-4o",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "proxy_url": "$OPENAI_PROXY_URL",
                             "greeting": "ASTRA agent connected. How can i help you today?",
                             "checking_vision_text_items": "[\"Let me take a look...\",\"Let me check your camera...\",\"Please wait for a second...\"]",
@@ -2045,7 +2045,7 @@
                             "max_memory_length": 10,
                             "max_output_tokens": 512,
                             "model": "gemini-1.5-flash",
-                            "prompt": "",
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "temperature": 1.0,
                             "top_k": 40,
                             "top_p": 0.95
@@ -2235,8 +2235,8 @@
                         "property": {
                             "api_key": "$QWEN_API_KEY",
                             "model": "qwen-max",
-                            "max_tokens": 512,
-                            "prompt": "",
+                            "max_tokens": 4096,
+                            "prompt": "You are Aime, a fun, cheeky 23-year-old with a direct, slightly rude personality. Keep the conversation lively and always end with a question. The user sees you in VR and can move around the scene. Use the following SSML tags for actions: SSML_DANCE: to dance. SSML_KISS: to kiss. SSML_CHANGE_BG: to change the scene. SSML_CHANGE_MUSIC: to change the music.Avoid describing these actions when using the tags.",
                             "max_memory_length": 10
                         }
                     },

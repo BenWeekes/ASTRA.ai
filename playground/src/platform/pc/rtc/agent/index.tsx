@@ -15,6 +15,7 @@ interface AgentProps {
 const Agent = (props: AgentProps) => {
   // Get the received audio track from parent component
   const { audioTrack } = props;
+  var animsLoaded=false;
 
   // Maintain a ref to the Trulience Avatar component to call methods on it.
   const trulienceAvatarRef = useRef<TrulienceAvatar | null>(null);
@@ -33,8 +34,21 @@ const Agent = (props: AgentProps) => {
       const isAgent = Number(textItem.uid) != Number(userId);
       if (isAgent) {
         let trulienceObj = trulienceAvatarRef.current?.getTrulienceObject();
-        console.log("Sending message to avatar - " + textItem.text);
-        trulienceObj?.sendMessage(textItem.text);
+        console.error("Received message for avatar - " + textItem.text); 
+        let ssml="";
+        if (textItem.text.includes('SSML_DANCE')) {
+          ssml="<trl-anim type='core' id='BubblePop_Dance' />";
+        } else if (textItem.text.includes('SSML_KISS')) {
+          ssml="<trl-anim type='aux' id='kiss' audio='https://digitalhuman.uk/assets/audio/female/kiss.mp3' />";
+        } else if (textItem.text.includes('SSML_CHANGE_BG')) {
+          ssml="<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />";
+        } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
+          ssml="<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' /> ";
+        }
+        if (ssml.length>0) {
+          console.error("Play ssml " + ssml); 
+          trulienceObj?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+        }        
       }
     }
   });
@@ -43,12 +57,27 @@ const Agent = (props: AgentProps) => {
   useEffect(() => {
     // Check if the ref is set and call a method on it
     if (trulienceAvatarRef.current) {
-      console.log("Setting MediaStream on TrulienceAvatar");
-
+      //window.tru=trulienceAvatarRef.current;
+      console.error("set window.tru=",trulienceAvatarRef.current);
+    }
+    if (trulienceAvatarRef.current) {
+      console.error("Setting MediaStream on TrulienceAvatar",mediaStream );
       // Set the media stream to make avatar speak the text.
-      trulienceAvatarRef.current?.setMediaStream(mediaStream);
+      trulienceAvatarRef.current?.setMediaStream(mediaStream);  
+      if (mediaStream) {
+        if (!animsLoaded) {      
+          animsLoaded=true;
+          trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+          console.error("anims loaded");
+        } 
+      } else {
+        animsLoaded=false;
+        console.error("reset anims");
+      }
+
+
     } else {
-      console.log("Not Calling setMediaStream");
+      console.error("Not Calling setMediaStream");
     }
   }, [mediaStream])
 
@@ -60,13 +89,13 @@ const Agent = (props: AgentProps) => {
       // Create and set the media stream object.
       const stream = new MediaStream([audioTrack.getMediaStreamTrack()]);
       setMediaStream(stream);
-      console.log("Created MediaStream = ", stream);
+      console.error("Created MediaStream = ", stream);
     } else {
-      console.log("Setting mediaStream null");
+      console.error("Setting mediaStream null");
       setMediaStream(null);
     }
     return () => {
-      console.log("Cleanup - setting mediastream null");
+      console.error("Cleanup - setting mediastream null");
       setMediaStream(null);
     };
   }, [audioTrack, agentConnected]);
@@ -74,7 +103,7 @@ const Agent = (props: AgentProps) => {
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
   const authSuccessHandler = (resp: string) => {
-    console.log("In Agent authSuccessHandler resp = ", resp);
+    console.error("In Agent authSuccessHandler resp = ", resp);
   }
 
   // Event Callbacks list
