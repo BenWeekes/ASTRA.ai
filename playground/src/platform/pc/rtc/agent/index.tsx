@@ -93,7 +93,7 @@ const Agent = (props: AgentProps) => {
         width="100%"
         height="100%"
         sttSource=""
-        ttsEnabled="false"
+        ttsEnabled={false}
       >
       </TrulienceAvatar>
     </div>
