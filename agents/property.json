@@ -407,6 +407,222 @@
                 ]
             },
             {
+                "name": "camera.va.openai.cartesia",
+                "auto_start": true,
+                "nodes": [
+                    {
+                        "type": "extension",
+                        "extension_group": "default",
+                        "addon": "agora_rtc",
+                        "name": "agora_rtc",
+                        "property": {
+                            "app_id": "$AGORA_APP_ID",
+                            "token": "<agora_token>",
+                            "channel": "astra_agents_test",
+                            "stream_id": 1234,
+                            "remote_stream_id": 123,
+                            "subscribe_audio": true,
+                            "subscribe_video": true,
+                            "publish_audio": true,
+                            "publish_data": true,
+                            "enable_agora_asr": true,
+                            "agora_asr_vendor_name": "microsoft",
+                            "agora_asr_language": "en-US",
+                            "agora_asr_vendor_key": "$AZURE_STT_KEY",
+                            "agora_asr_vendor_region": "$AZURE_STT_REGION",
+                            "agora_asr_session_control_file_path": "session_control.conf",
+                            "subscribe_video_pix_fmt": 4
+                        }
+                    },
+                    {
+                        "type": "extension",
+                        "extension_group": "default",
+                        "addon": "interrupt_detector",
+                        "name": "interrupt_detector"
+                    },
+                    {
+                        "type": "extension",
+                        "extension_group": "chatgpt",
+                        "addon": "openai_chatgpt_python",
+                        "name": "openai_chatgpt",
+                        "property": {
+                            "base_url": "",
+                            "api_key": "$OPENAI_API_KEY",
+                            "frequency_penalty": 0.9,
+                            "model": "gpt-4o",
+                            "max_tokens": 512,
+                            "prompt": "",
+                            "proxy_url": "$OPENAI_PROXY_URL",
+                            "greeting": "ASTRA agent connected. How can i help you today?",
+                            "checking_vision_text_items": "[\"Let me take a look...\",\"Let me check your camera...\",\"Please wait for a second...\"]",
+                            "max_memory_length": 10,
+                            "enable_tools": true
+                        }
+                    },
+                    {
+                        "type": "extension",
+                        "extension_group": "tts",
+                        "addon": "cartesia_tts",
+                        "name": "cartesia_tts",
+                        "property": {
+                            "api_key": "$CARTESIA_API_KEY",
+                            "cartesia_version": "2024-06-10",
+                            "model_id": "sonic-english",
+                            "voice_id": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94",
+                            "sample_rate": "44100"
+                        }
+                    },
+                    {
+                        "type": "extension",
+                        "extension_group": "transcriber",
+                        "addon": "message_collector",
+                        "name": "message_collector"
+                    },
+                    {
+                        "type": "extension_group",
+                        "addon": "default_extension_group",
+                        "name": "default"
+                    },
+                    {
+                        "type": "extension_group",
+                        "addon": "default_extension_group",
+                        "name": "chatgpt"
+                    },
+                    {
+                        "type": "extension_group",
+                        "addon": "default_extension_group",
+                        "name": "tts"
+                    },
+                    {
+                        "type": "extension_group",
+                        "addon": "default_extension_group",
+                        "name": "transcriber"
+                    }
+                ],
+                "connections": [
+                    {
+                        "extension_group": "default",
+                        "extension": "agora_rtc",
+                        "data": [
+                            {
+                                "name": "text_data",
+                                "dest": [
+                                    {
+                                        "extension_group": "default",
+                                        "extension": "interrupt_detector"
+                                    },
+                                    {
+                                        "extension_group": "chatgpt",
+                                        "extension": "openai_chatgpt"
+                                    },
+                                    {
+                                        "extension_group": "transcriber",
+                                        "extension": "message_collector"
+                                    }
+                                ]
+                            }
+                        ],
+                        "video_frame": [
+                            {
+                                "name": "video_frame",
+                                "dest": [
+                                    {
+                                        "extension_group": "chatgpt",
+                                        "extension": "openai_chatgpt"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "extension_group": "chatgpt",
+                        "extension": "openai_chatgpt",
+                        "data": [
+                            {
+                                "name": "text_data",
+                                "dest": [
+                                    {
+                                        "extension_group": "tts",
+                                        "extension": "cartesia_tts"
+                                    },
+                                    {
+                                        "extension_group": "transcriber",
+                                        "extension": "message_collector"
+                                    }
+                                ]
+                            }
+                        ],
+                        "cmd": [
+                            {
+                                "name": "flush",
+                                "dest": [
+                                    {
+                                        "extension_group": "tts",
+                                        "extension": "cartesia_tts"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "extension_group": "tts",
+                        "extension": "cartesia_tts",
+                        "audio_frame": [
+                            {
+                                "name": "pcm_frame",
+                                "dest": [
+                                    {
+                                        "extension_group": "default",
+                                        "extension": "agora_rtc"
+                                    }
+                                ]
+                            }
+                        ],
+                        "cmd": [
+                            {
+                                "name": "flush",
+                                "dest": [
+                                    {
+                                        "extension_group": "default",
+                                        "extension": "agora_rtc"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "extension_group": "transcriber",
+                        "extension": "message_collector",
+                        "data": [
+                            {
+                                "name": "data",
+                                "dest": [
+                                    {
+                                        "extension_group": "default",
+                                        "extension": "agora_rtc"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "extension_group": "default",
+                        "extension": "interrupt_detector",
+                        "cmd": [
+                            {
+                                "name": "flush",
+                                "dest": [
+                                    {
+                                        "extension_group": "chatgpt",
+                                        "extension": "openai_chatgpt"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "va.openai.cartesia",
                 "auto_start": true,
                 "nodes": [
@@ -464,7 +680,7 @@
                             "api_key": "$CARTESIA_API_KEY",
                             "cartesia_version": "2024-06-10",
                             "model_id": "sonic-english",
-                            "voice_id": "03496517-369a-4db1-8236-3d3ae459ddf7",
+                            "voice_id": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94",
                             "sample_rate": "44100"
                         }
                     },
