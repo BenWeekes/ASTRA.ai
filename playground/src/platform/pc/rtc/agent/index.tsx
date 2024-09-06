@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppSelector, useMultibandTrackVolume } from "@/common"
-import { TrulienceAvatar } from "trulience-sdk";
+import { TrulienceAvatar } from 'trulience-sdk';
 import { IMicrophoneAudioTrack } from 'agora-rtc-sdk-ng';
 import styles from "./index.module.scss";
 import { useRef, useState, useEffect } from "react";
@@ -17,7 +17,7 @@ const Agent = (props: AgentProps) => {
   const { audioTrack } = props;
 
   // Maintain a ref to the Trulience Avatar component to call methods on it.
-  const trulienceAvatarRef = useRef(null);
+  const trulienceAvatarRef = useRef<TrulienceAvatar | null>(null);
 
   // Keep track of the media stream created from the audio track
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
@@ -46,7 +46,7 @@ const Agent = (props: AgentProps) => {
       console.log("Setting MediaStream on TrulienceAvatar");
 
       // Set the media stream to make avatar speak the text.
-      trulienceAvatarRef.current.setMediaStream(mediaStream);
+      trulienceAvatarRef.current?.setMediaStream(mediaStream);
     } else {
       console.log("Not Calling setMediaStream");
     }
@@ -87,13 +87,13 @@ const Agent = (props: AgentProps) => {
       <TrulienceAvatar
         url={process.env.NEXT_PUBLIC_trulienceSDK}
         ref={trulienceAvatarRef}
-        avatarId={process.env.NEXT_PUBLIC_avatarId}
+        avatarId={process.env.NEXT_PUBLIC_avatarId ? process.env.NEXT_PUBLIC_avatarId : ""}
         token={process.env.NEXT_PUBLIC_avatarToken}
-        evenCallbacks={eventCallbacks}
+        eventCallbacks={eventCallbacks}
         width="100%"
         height="100%"
         sttSource=""
-        ttsEnabled="false"
+        ttsEnabled={false}
       >
       </TrulienceAvatar>
     </div>

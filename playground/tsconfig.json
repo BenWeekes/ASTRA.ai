@@ -16,6 +16,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
+    "typeRoots": [
+      "./node_modules/trulience-sdk/dist"
+    ],
     "plugins": [
       {
         "name": "next"
