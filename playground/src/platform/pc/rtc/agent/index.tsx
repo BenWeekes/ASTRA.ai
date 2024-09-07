@@ -58,24 +58,12 @@ const Agent = (props: AgentProps) => {
     // Check if the ref is set and call a method on it
     if (trulienceAvatarRef.current) {
       //window.tru=trulienceAvatarRef.current;
-      console.error("set window.tru=",trulienceAvatarRef.current);
+      //console.error("set window.tru=",trulienceAvatarRef.current);
     }
     if (trulienceAvatarRef.current) {
       console.error("Setting MediaStream on TrulienceAvatar",mediaStream );
       // Set the media stream to make avatar speak the text.
       trulienceAvatarRef.current?.setMediaStream(mediaStream);  
-      if (mediaStream) {
-        if (!animsLoaded) {      
-          animsLoaded=true;
-          trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
-          console.error("anims loaded");
-        } 
-      } else {
-        animsLoaded=false;
-        console.error("reset anims");
-      }
-
-
     } else {
       console.error("Not Calling setMediaStream");
     }
@@ -100,17 +88,29 @@ const Agent = (props: AgentProps) => {
     };
   }, [audioTrack, agentConnected]);
 
+  
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
   const authSuccessHandler = (resp: string) => {
     console.error("In Agent authSuccessHandler resp = ", resp);
   }
 
-  // Event Callbacks list
+  const websocketConnectHandler = (resp: string) => {
+    //TrlDebug.webgl._trulienceObj.sendMessageToAvatar("<trl-anim type='core' id='BubblePop_Dance' />");
+
+    console.error("In Agent websocketConnectHandler resp = ", resp);
+    if (trulienceAvatarRef.current) {
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+      console.error("anims loaded in auth");
+    }
+  }
+
   const eventCallbacks = [
-    { "auth-success": authSuccessHandler }
+    //{"auth-success" : authSuccessHandler},
+    {"websocket-connect" : websocketConnectHandler}
   ]
 
+ 
   return (
     <div className={styles.agent}>
       <TrulienceAvatar
