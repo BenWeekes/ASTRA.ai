@@ -34,7 +34,7 @@ const Agent = (props: AgentProps) => {
       const isAgent = Number(textItem.uid) != Number(userId);
       if (isAgent) {
         let trulienceObj = trulienceAvatarRef.current?.getTrulienceObject();
-        console.error("Received message for avatar - " + textItem.text); 
+        console.log("Received message for avatar - " + textItem.text); 
         let ssml="";
         if (textItem.text.includes('SSML_DANCE')) {
           ssml="<trl-anim type='core' id='BubblePop_Dance' />";
@@ -57,15 +57,11 @@ const Agent = (props: AgentProps) => {
   useEffect(() => {
     // Check if the ref is set and call a method on it
     if (trulienceAvatarRef.current) {
-      //window.tru=trulienceAvatarRef.current;
-      //console.error("set window.tru=",trulienceAvatarRef.current);
-    }
-    if (trulienceAvatarRef.current) {
       console.error("Setting MediaStream on TrulienceAvatar",mediaStream );
       // Set the media stream to make avatar speak the text.
       trulienceAvatarRef.current?.setMediaStream(mediaStream);  
     } else {
-      console.error("Not Calling setMediaStream");
+      console.log("Not Calling setMediaStream");
     }
   }, [mediaStream])
 
@@ -73,17 +69,16 @@ const Agent = (props: AgentProps) => {
     // Make sure we create media stream only if not available.
     if (audioTrack && !mediaStream && agentConnected) {
       audioTrack.setVolume(0);
-
       // Create and set the media stream object.
       const stream = new MediaStream([audioTrack.getMediaStreamTrack()]);
       setMediaStream(stream);
-      console.error("Created MediaStream = ", stream);
+      console.log("Created MediaStream = ", stream);
     } else {
-      console.error("Setting mediaStream null");
+      console.log("Setting mediaStream null");
       setMediaStream(null);
     }
     return () => {
-      console.error("Cleanup - setting mediastream null");
+      console.log("Cleanup - setting mediastream null");
       setMediaStream(null);
     };
   }, [audioTrack, agentConnected]);
@@ -92,7 +87,7 @@ const Agent = (props: AgentProps) => {
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
   const authSuccessHandler = (resp: string) => {
-    console.error("In Agent authSuccessHandler resp = ", resp);
+    console.log("In Agent authSuccessHandler resp = ", resp);
   }
 
   const websocketConnectHandler = (resp: string) => {
@@ -110,7 +105,6 @@ const Agent = (props: AgentProps) => {
     {"websocket-connect" : websocketConnectHandler}
   ]
 
- 
   return (
     <div className={styles.agent}>
       <TrulienceAvatar
