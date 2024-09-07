@@ -47,7 +47,7 @@ const Agent = (props: AgentProps) => {
         }
         if (ssml.length>0) {
           console.error("Play ssml " + ssml); 
-          trulienceObj?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+          trulienceObj?.sendMessageToAvatar(ssml);
         }        
       }
     }
