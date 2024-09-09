@@ -23,7 +23,7 @@ const getInitialState = (): InitialState => {
     voiceType: "female",
     chatItems: [],
     //graphName: "camera.va.openai.azure"
-    graphName: "va.openai.cartesia"
+    graphName: "camera.va.openai.cartesia"
     
   }
 }
