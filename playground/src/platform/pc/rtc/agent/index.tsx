@@ -156,8 +156,9 @@ const Agent = (props: AgentProps) => {
   }
 
   const loadProgress = (resp: string) => {
+    const parsedResp = JSON.parse(resp) as { percent?: number };
     //TrlDebug.webgl._trulienceObj.sendMessageToAvatar("<trl-anim type='core' id='BubblePop_Dance' />"); 
-    if (trulienceAvatarRef.current && resp && resp.percent && resp.percent == 1) {
+    if (trulienceAvatarRef.current && resp && parsedResp.percent && parsedResp.percent == 1) {
       console.error("In callback loadProgress resp = ", resp);
       trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
       console.error("anims loaded in auth");
