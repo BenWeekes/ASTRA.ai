@@ -10,7 +10,8 @@ export interface InitialState {
   language: Language
   voiceType: VoiceType
   chatItems: IChatItem[],
-  graphName: string
+  graphName: string,
+  isFullscreen: boolean
 }
 
 const getInitialState = (): InitialState => {
@@ -23,8 +24,8 @@ const getInitialState = (): InitialState => {
     voiceType: "female",
     chatItems: [],
     //graphName: "camera.va.openai.azure"
-    graphName: "va.openai.cartesia"
-    
+    graphName: "va.openai.cartesia",
+    isFullscreen: false
   }
 }
 
@@ -92,6 +93,9 @@ export const globalSlice = createSlice({
     setVoiceType: (state, action: PayloadAction<VoiceType>) => {
       state.voiceType = action.payload
     },
+    setFullscreen: (state, action: PayloadAction<boolean>) => {
+      state.isFullscreen = action.payload
+    },
     reset: (state) => {
       Object.assign(state, getInitialState())
       document.documentElement.style.setProperty('--theme-color', COLOR_LIST[0].active);
@@ -101,7 +105,7 @@ export const globalSlice = createSlice({
 
 export const { reset, setOptions,
   setRoomConnected, setAgentConnected, setVoiceType,
-  addChatItem, setThemeColor, setLanguage, setGraphName } =
+  addChatItem, setThemeColor, setLanguage, setGraphName, setFullscreen } =
   globalSlice.actions
 
 export default globalSlice.reducer

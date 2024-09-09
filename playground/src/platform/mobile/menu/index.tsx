@@ -1,7 +1,7 @@
 "use client"
 
 import { ReactElement, useEffect, useState, useRef, useMemo, useCallback } from "react"
-import { useAutoScroll } from "@/common"
+import { useAppSelector, useAutoScroll } from "@/common"
 import { MenuContext } from "./context"
 import styles from "./index.module.scss"
 
@@ -23,6 +23,7 @@ const Menu = (props: MenuProps) => {
   const { data } = props
   const [activeIndex, setActiveIndex] = useState(0)
   const contentRefList = useRef<(HTMLDivElement | null)[]>([])
+  const isFullscreen = useAppSelector(state => state.global.isFullscreen)
 
   const onClickItem = (index: number) => {
     setActiveIndex(index)
@@ -56,7 +57,10 @@ const Menu = (props: MenuProps) => {
           onClick={() => onClickItem(index)}>{item.name}</span>
       })}
     </section>
-    <section className={styles.content} >
+    <section 
+      className={styles.content} 
+      style={{ position : isFullscreen ? "unset" : "relative" }}
+      >
       <MenuContext.Provider value={{ scrollToBottom }}>
         {data.map((item, index) => {
           return <div

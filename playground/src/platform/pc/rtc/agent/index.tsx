@@ -1,12 +1,14 @@
 "use client"
 
-import { useAppSelector, useMultibandTrackVolume } from "@/common"
+import { useAppDispatch, useAppSelector, useMultibandTrackVolume } from "@/common"
 import { TrulienceAvatar } from 'trulience-sdk';
 import { IMicrophoneAudioTrack } from 'agora-rtc-sdk-ng';
 import styles from "./index.module.scss";
 import { useRef, useState, useEffect } from "react";
 import { rtcManager } from "@/manager";
 import { ITextItem } from "@/types";
+import { FullScreenIcon } from "@/components/icons/fullsccreen";
+import { setFullscreen } from "@/store/reducers/global";
 
 interface AgentProps {
   audioTrack?: IMicrophoneAudioTrack
@@ -27,6 +29,9 @@ const Agent = (props: AgentProps) => {
   const agentConnected = useAppSelector(state => state.global.agentConnected)
   const options = useAppSelector(state => state.global.options)
   const { userId } = options
+
+  const isFullscreen = useAppSelector(state => state.global.isFullscreen)
+  const appDispatch = useAppDispatch()
 
   // Forward the received messages to avatar.
   rtcManager.on("textChanged", (textItem: ITextItem) => {
@@ -106,7 +111,14 @@ const Agent = (props: AgentProps) => {
   ]
 
   return (
-    <div className={styles.agent}>
+    <div className={`${styles.agent} ${isFullscreen ? styles.fullscreenContainer : ""}`}>
+      <div 
+        className={styles.fullScreenIcon} 
+        onClick={() => appDispatch(setFullscreen(!isFullscreen))}
+        >
+        <FullScreenIcon active={isFullscreen} />
+      </div>
+      
       <TrulienceAvatar
         url={process.env.NEXT_PUBLIC_trulienceSDK}
         ref={trulienceAvatarRef}
