@@ -28,6 +28,43 @@ const Agent = (props: AgentProps) => {
   const options = useAppSelector(state => state.global.options)
   const { userId } = options
 
+  const animStrings = [
+    "<trl-anim type='core' id='BubblePop_Dance' />",
+    "<trl-anim type='core' id='OnTheFloor_Dance' />",
+    "<trl-anim type='core' id='Routine_07' />",
+    "<trl-anim type='core' id='Shuffle_CrossLimbs_F' />"
+];
+
+
+const bgStrings = [
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+];
+
+const musicString =[
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+  "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+];
+
+function getRandomAnim() {
+  const randomIndex = Math.floor(Math.random() * animStrings.length);
+  return animStrings[randomIndex];
+}
+
+function getRandomMusic() {
+  const randomIndex = Math.floor(Math.random() * musicString.length);
+  return musicString[randomIndex];
+}
+
+function getRandomBG() {
+  const randomIndex = Math.floor(Math.random() * bgStrings.length);
+  return bgStrings[randomIndex];
+}
+
   // Forward the received messages to avatar.
   rtcManager.on("textChanged", (textItem: ITextItem) => {
     if (textItem.isFinal && textItem.dataType == "transcribe") {
@@ -37,14 +74,18 @@ const Agent = (props: AgentProps) => {
         console.log("Received message for avatar - " + textItem.text); 
         let ssml="";
         if (textItem.text.includes('SSML_DANCE')) {
-          ssml="<trl-anim type='core' id='BubblePop_Dance' />";
+          ssml=getRandomAnim();
         } else if (textItem.text.includes('SSML_KISS')) {
-          ssml="<trl-anim type='aux' id='kiss' audio='https://digitalhuman.uk/assets/audio/female/kiss.mp3' />";
+          ssml="<trl-anim immediate='true' type='aux' id='kiss' audio='https://digitalhuman.uk/assets/audio/female/kiss.mp3' />";
         } else if (textItem.text.includes('SSML_CHANGE_BG')) {
-          ssml="<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />";
+          ssml=getRandomBG();
         } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
-          ssml="<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' /> ";
+          ssml=getRandomMusic();
+        } else if (textItem.text.includes('SSML_MUSIC_STOP')) {
+          ssml="<trl-stop-background-audio />";
         }
+
+        
         if (ssml.length>0) {
           console.error("Play ssml " + ssml); 
           trulienceObj?.sendMessageToAvatar(ssml);
