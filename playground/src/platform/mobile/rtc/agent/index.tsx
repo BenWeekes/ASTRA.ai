@@ -103,7 +103,7 @@ const Agent = (props: AgentProps) => {
           } else if (textItem.text.includes('SSML_MUSIC_STOP')) {
             ssml = "<trl-stop-background-audio immediate='true' />";
           }
-
+          
           if (ssml.length > 0) {
             console.error("Play ssml " + ssml);
             trulienceObj?.sendMessageToAvatar(ssml);
@@ -128,7 +128,7 @@ const Agent = (props: AgentProps) => {
 
   useEffect(() => {
     // Make sure we create media stream only if not available.
-    console.error('audioTrack',audioTrack);
+    console.error('audioTrack',audioTrack, 'agentConnected',agentConnected );
     if (audioTrack && !mediaStream && agentConnected) {
       //audioTrack.setVolume(0);
       // Create and set the media stream object.
@@ -136,6 +136,10 @@ const Agent = (props: AgentProps) => {
       setMediaStream(stream);
       console.error("Created MediaStream = ", stream, audioTrack);
     } else {
+      if (!agentConnected && trulienceAvatarRef.current) {
+        trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-stop-background-audio immediate='true' />");
+
+      }
       console.error("Setting mediaStream null");
       setMediaStream(null);
     }

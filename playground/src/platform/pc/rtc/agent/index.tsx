@@ -136,6 +136,9 @@ const Agent = (props: AgentProps) => {
       setMediaStream(stream);
       console.error("Created MediaStream = ", stream, audioTrack);
     } else {
+      if (!agentConnected && trulienceAvatarRef.current) {
+        trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-stop-background-audio immediate='true' />");
+      }
       console.error("Setting mediaStream null");
       setMediaStream(null);
     }
