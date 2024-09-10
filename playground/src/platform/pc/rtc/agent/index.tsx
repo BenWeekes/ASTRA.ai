@@ -33,33 +33,9 @@ const Agent = (props: AgentProps) => {
   const options = useAppSelector(state => state.global.options)
   const { userId } = options
 
-<<<<<<< HEAD
   const isFullscreen = useAppSelector(state => state.global.isFullscreen)
   const appDispatch = useAppDispatch()
-
-  // Forward the received messages to avatar.
-  rtcManager.on("textChanged", (textItem: ITextItem) => {
-    if (textItem.isFinal && textItem.dataType == "transcribe") {
-      const isAgent = Number(textItem.uid) != Number(userId);
-      if (isAgent) {
-        let trulienceObj = trulienceAvatarRef.current?.getTrulienceObject();
-        console.log("Received message for avatar - " + textItem.text); 
-        let ssml="";
-        if (textItem.text.includes('SSML_DANCE')) {
-          ssml="<trl-anim type='core' id='BubblePop_Dance' />";
-        } else if (textItem.text.includes('SSML_KISS')) {
-          ssml="<trl-anim type='aux' id='kiss' audio='https://digitalhuman.uk/assets/audio/female/kiss.mp3' />";
-        } else if (textItem.text.includes('SSML_CHANGE_BG')) {
-          ssml="<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />";
-        } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
-          ssml="<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' /> ";
-        }
-        if (ssml.length>0) {
-          console.error("Play ssml " + ssml); 
-          trulienceObj?.sendMessageToAvatar(ssml);
-        }        
-      }
-=======
+ 
   const animStrings = [
     "<trl-anim immediate='true' type='core' id='BubblePop_Dance' />",
     "<trl-anim immediate='true' type='core' id='OnTheFloor_Dance' />",
@@ -85,7 +61,6 @@ const Agent = (props: AgentProps) => {
     let ret=animStrings[dance++]
     if (dance>animStrings.length-1){
       dance=0;
->>>>>>> origin/main
     }
     return ret;
   }
@@ -107,8 +82,7 @@ const Agent = (props: AgentProps) => {
   }
 
   // Forward the received messages to avatar.
-  //console.error(' time to  add listener?', trulienceAvatarRef.current);
-  if (trulienceAvatarRef.current == null) {
+   if (trulienceAvatarRef.current == null) {
     console.error('adding listener', trulienceAvatarRef);
     rtcManager.on("textChanged", (textItem: ITextItem) => {
       if (textItem.isFinal && textItem.dataType == "transcribe" && textItem.time != lastChatTime) {

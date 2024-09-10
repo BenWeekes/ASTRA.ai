@@ -32,10 +32,10 @@ const Agent = (props: AgentProps) => {
   const agentConnected = useAppSelector(state => state.global.agentConnected)
   const options = useAppSelector(state => state.global.options)
   const { userId } = options
-  
+
   const isFullscreen = useAppSelector(state => state.global.isFullscreen)
   const appDispatch = useAppDispatch()
-
+ 
   const animStrings = [
     "<trl-anim immediate='true' type='core' id='BubblePop_Dance' />",
     "<trl-anim immediate='true' type='core' id='OnTheFloor_Dance' />",
@@ -44,17 +44,17 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
   ];
 
   const musicString = [
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />"
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />"   
   ];
 
   function getDance() {
@@ -65,9 +65,12 @@ const Agent = (props: AgentProps) => {
     return ret;
   }
 
-  function getRandomMusic() {
-    const randomIndex = Math.floor(Math.random() * musicString.length);
-    return musicString[randomIndex];
+  function getMusic() {
+    let ret=musicString[music++]
+    if (music>musicString.length-1){
+      music=0;
+    }
+    return ret;
   }
 
   function getBG() {
@@ -79,8 +82,7 @@ const Agent = (props: AgentProps) => {
   }
 
   // Forward the received messages to avatar.
-  //console.error(' time to  add listener?', trulienceAvatarRef.current);
-  if (trulienceAvatarRef.current == null) {
+   if (trulienceAvatarRef.current == null) {
     console.error('adding listener', trulienceAvatarRef);
     rtcManager.on("textChanged", (textItem: ITextItem) => {
       if (textItem.isFinal && textItem.dataType == "transcribe" && textItem.time != lastChatTime) {
@@ -97,9 +99,9 @@ const Agent = (props: AgentProps) => {
           } else if (textItem.text.includes('SSML_CHANGE_BG')) {
             ssml = getBG();
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
-            ssml = getRandomMusic();
+            ssml = getMusic();
           } else if (textItem.text.includes('SSML_MUSIC_STOP')) {
-            ssml = "<trl-stop-background-audio />";
+            ssml = "<trl-stop-background-audio immediate='true' />";
           }
 
           if (ssml.length > 0) {
@@ -147,11 +149,6 @@ const Agent = (props: AgentProps) => {
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
   const authSuccessHandler = (resp: string) => {
-<<<<<<< HEAD
-    console.log("In Agent authSuccessHandler resp = ", resp);
-  } 
-  // Event Callbacks list
-=======
     console.log("In callback authSuccessHandler resp = ", resp);
   }
 
@@ -178,22 +175,18 @@ const Agent = (props: AgentProps) => {
     }
   }
 
->>>>>>> origin/main
   const eventCallbacks = [
     //{"auth-success" : authSuccessHandler},
     //{"websocket-connect" : websocketConnectHandler}
     { "load-progress": loadProgress }
   ]
-  
-  const handleFullscreen = () => {
-    appDispatch(setFullscreen(!isFullscreen))
-  }
 
   return (
-    <div className={`${styles.agent} ${isFullscreen ? styles.fullscreenContainer : ""}`} >
+    <div className={`${styles.agent} ${isFullscreen ? styles.fullscreenContainer : ""}`}>
       <div 
         className={styles.fullScreenIcon} 
-        onClick={handleFullscreen}>
+        onClick={() => appDispatch(setFullscreen(!isFullscreen))}
+        >
         <FullScreenIcon active={isFullscreen} />
       </div>
       
