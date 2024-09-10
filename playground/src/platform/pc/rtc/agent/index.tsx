@@ -46,10 +46,10 @@ const Agent = (props: AgentProps) => {
   ];
 
   const musicString = [
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />"
+    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />"
   ];
 
   function getDance() {
@@ -60,9 +60,12 @@ const Agent = (props: AgentProps) => {
     return ret;
   }
 
-  function getRandomMusic() {
-    const randomIndex = Math.floor(Math.random() * musicString.length);
-    return musicString[randomIndex];
+  function getMusic() {
+    let ret=musicString[music++]
+    if (music>musicString.length-1){
+      music=0;
+    }
+    return ret;
   }
 
   function getBG() {
@@ -92,7 +95,7 @@ const Agent = (props: AgentProps) => {
           } else if (textItem.text.includes('SSML_CHANGE_BG')) {
             ssml = getBG();
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
-            ssml = getRandomMusic();
+            ssml = getMusic();
           } else if (textItem.text.includes('SSML_MUSIC_STOP')) {
             ssml = "<trl-stop-background-audio />";
           }
