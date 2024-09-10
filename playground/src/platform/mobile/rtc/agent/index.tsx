@@ -123,7 +123,7 @@ const Agent = (props: AgentProps) => {
     // Make sure we create media stream only if not available.
     console.error('audioTrack',audioTrack);
     if (audioTrack && !mediaStream && agentConnected) {
-      audioTrack.setVolume(0);
+      //audioTrack.setVolume(0);
       // Create and set the media stream object.
       const stream = new MediaStream([audioTrack.getMediaStreamTrack()]);
       setMediaStream(stream);
