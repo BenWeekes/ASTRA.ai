@@ -39,17 +39,17 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
   ];
 
   const musicString = [
-    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />",
-    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />"
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />"
   ];
 
   function getDance() {
@@ -97,7 +97,7 @@ const Agent = (props: AgentProps) => {
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
             ssml = getMusic();
           } else if (textItem.text.includes('SSML_MUSIC_STOP')) {
-            ssml = "<trl-stop-background-audio />";
+            ssml = "<trl-stop-background-audio immediate='true' />";
           }
 
           if (ssml.length > 0) {
