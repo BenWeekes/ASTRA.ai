@@ -1,5 +1,5 @@
 .rtc {
-  flex: 0 0 420px;
+  height: 100%; 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -7,8 +7,11 @@
   align-self: stretch;
   border-radius: 8px;
   border: 1px solid #272A2F;
-  background: #181A1D;
   box-sizing: border-box;
+  gap: 8px;
+  padding: 8px;
+  background: linear-gradient(154deg, rgba(27, 66, 166, 0.16) 0%, rgba(27, 45, 140, 0) 18%), linear-gradient(153deg, rgba(23, 24, 28, 0) 53.75%, #11174E 100%), #0F0F11;
+  box-shadow: 0px 3.999px 48.988px 0px rgba(0, 7, 72, 0.12);
 
   .header {
     display: flex;
@@ -33,13 +36,12 @@
 
   .you {
     display: flex;
-    padding: 14px 6px;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 14px;
     align-self: stretch;
-    border-top: 1px solid #272A2F;
 
     .title {
       color: var(--Grey-300, #FFC0CB);
@@ -49,7 +51,6 @@
       letter-spacing: 0.449px;
       text-align: center;
     }
-
 
   }
 }
