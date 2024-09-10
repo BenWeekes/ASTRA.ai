@@ -24,8 +24,9 @@ const getInitialState = (): InitialState => {
     voiceType: "female",
     chatItems: [],
     //graphName: "camera.va.openai.azure"
-    graphName: "va.openai.cartesia",
-    isFullscreen: false
+    isFullscreen: false,
+    graphName: "camera.va.openai.cartesia"
+
   }
 }
 

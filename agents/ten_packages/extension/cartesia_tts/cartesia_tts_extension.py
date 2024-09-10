@@ -4,6 +4,7 @@ import queue
 import threading
 from datetime import datetime
 import asyncio
+import re
 from ten import (
     Extension,
     TenEnv,
@@ -64,6 +65,8 @@ class CartesiaTTSExtension(Extension):
         self.stopped = False
         self.thread = None
         self.callback = None
+        self.skip_patterns = [r'\bssml_\w+\b']
+
 
     def on_start(self, ten: TenEnv) -> None:
         try:
@@ -93,7 +96,7 @@ class CartesiaTTSExtension(Extension):
             ten.on_start_done()
         except Exception as e:
             logger.error(f"Failed to start CartesiaTTSExtension: {e}")
-            ten.on_start_done(success=False)
+            ten.on_start_done()
 
     def on_stop(self, ten: TenEnv) -> None:
         # Clean up resources and stop thread
@@ -137,12 +140,20 @@ class CartesiaTTSExtension(Extension):
             except Exception as e:
                 logger.exception(f"Error in async_handle: {e}")
 
+    def process_input_text(self, input_text: str) -> str:
+        for pattern in self.skip_patterns:
+            input_text = re.sub(pattern, '', input_text, flags=re.IGNORECASE)
+        return input_text.strip()
+
     def on_data(self, ten: TenEnv, data: Data) -> None:
         # Queue incoming text for processing
         input_text = data.get_property_string("text")
         if not input_text:
             return
-        self.queue.put((input_text, datetime.now()))
+
+        processed_text = self.process_input_text(input_text)
+        if processed_text:
+            self.queue.put((processed_text, datetime.now()))
 
     def on_cmd(self, ten: TenEnv, cmd: Cmd) -> None:
         # Handle incoming commands
