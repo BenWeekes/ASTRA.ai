@@ -18,9 +18,9 @@ const Agent = (props: AgentProps) => {
   // Get the received audio track from parent component
   const { audioTrack } = props;
   var lastChatTime = 0;
-  var dance=0;
-  var bg=0;
-  var music=0;
+  var dance = 0;
+  var bg = 0;
+  var music = 0;
 
   // Maintain a ref to the Trulience Avatar component to call methods on it.
   const trulienceAvatarRef = useRef<TrulienceAvatar | null>(null);
@@ -35,7 +35,7 @@ const Agent = (props: AgentProps) => {
 
   const isFullscreen = useAppSelector(state => state.global.isFullscreen)
   const appDispatch = useAppDispatch()
- 
+
   const animStrings = [
     "<trl-anim immediate='true' type='core' id='BubblePop_Dance' />",
     "<trl-anim immediate='true' type='core' id='OnTheFloor_Dance' />",
@@ -58,31 +58,31 @@ const Agent = (props: AgentProps) => {
   ];
 
   function getDance() {
-    let ret=animStrings[dance++]
-    if (dance>animStrings.length-1){
-      dance=0;
+    let ret = animStrings[dance++]
+    if (dance > animStrings.length - 1) {
+      dance = 0;
     }
     return ret;
   }
 
   function getMusic() {
-    let ret=musicString[music++]
-    if (music>musicString.length-1){
-      music=0;
+    let ret = musicString[music++]
+    if (music > musicString.length - 1) {
+      music = 0;
     }
     return ret;
   }
 
   function getBG() {
-    let ret=bgStrings[bg++]
-    if (bg>bgStrings.length-1){
-      dance=0;
+    let ret = bgStrings[bg++]
+    if (bg > bgStrings.length - 1) {
+      dance = 0;
     }
     return ret;
   }
 
   // Forward the received messages to avatar.
-   if (trulienceAvatarRef.current == null) {
+  if (trulienceAvatarRef.current == null) {
     console.error('adding listener', trulienceAvatarRef);
     rtcManager.on("textChanged", (textItem: ITextItem) => {
       if (textItem.isFinal && textItem.dataType == "transcribe" && textItem.time != lastChatTime) {
@@ -128,7 +128,7 @@ const Agent = (props: AgentProps) => {
 
   useEffect(() => {
     // Make sure we create media stream only if not available.
-    console.error('audioTrack',audioTrack);
+    console.error('audioTrack', audioTrack);
     if (audioTrack && !mediaStream && agentConnected) {
       //audioTrack.setVolume(0);
       // Create and set the media stream object.
@@ -156,43 +156,32 @@ const Agent = (props: AgentProps) => {
   }
 
   const websocketConnectHandler = (resp: string) => {
-    //TrlDebug.webgl._trulienceObj.sendMessageToAvatar("<trl-anim type='core' id='BubblePop_Dance' />");
-
-    console.error("In callback websocketConnectHandler resp = ", resp);
+    console.log("In callback websocketConnectHandler resp = ", resp);
     if (trulienceAvatarRef.current) {
       trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
-      console.error("anims loaded in auth");
+      console.log("anims loaded in websocket connect");
     }
   }
 
-  interface RespType {
-    percent?: number; // or `percent: number` if you know it will always be there
+  const loadProgress = (progressDetails: { [key: string]: any }) => {
+    console.log("In callback loadProgress progressDetails = ", progressDetails);
   }
 
-  const loadProgress = (resp: RespType) => {
-    //TrlDebug.webgl._trulienceObj.sendMessageToAvatar("<trl-anim type='core' id='BubblePop_Dance' />"); 
-    if (trulienceAvatarRef.current && resp && resp.percent && resp.percent == 1) {
-      console.error("In callback loadProgress resp = ", resp);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
-      console.error("anims loaded in auth");
-    }
+  const eventCallbacks = {
+    "auth-success": authSuccessHandler,
+    "websocket-connect": websocketConnectHandler,
+    "load-progress": loadProgress
   }
-
-  const eventCallbacks = [
-    //{"auth-success" : authSuccessHandler},
-    //{"websocket-connect" : websocketConnectHandler}
-    { "load-progress": loadProgress }
-  ]
 
   return (
     <div className={`${styles.agent} ${isFullscreen ? styles.fullscreenContainer : ""}`}>
-      <div 
-        className={styles.fullScreenIcon} 
+      <div
+        className={styles.fullScreenIcon}
         onClick={() => appDispatch(setFullscreen(!isFullscreen))}
-        >
+      >
         <FullScreenIcon active={isFullscreen} />
       </div>
-      
+
       <TrulienceAvatar
         url={process.env.NEXT_PUBLIC_trulienceSDK}
         ref={trulienceAvatarRef}
