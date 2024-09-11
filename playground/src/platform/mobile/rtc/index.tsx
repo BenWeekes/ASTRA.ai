@@ -87,10 +87,12 @@ const Rtc = () => {
 
   const onTextChanged = (text: ITextItem) => {
     if (text.dataType == "transcribe") {
+      //console.error('text.text', text.text);
+      
       const isAgent = Number(text.uid) != Number(userId)
       dispatch(addChatItem({
         userId: text.uid,
-        text: text.text,
+        text: text.text.replace(/\bSSML_\w*\b/g, '').replace(/\s+/g, ' ').trim(),
         type: isAgent ? "agent" : "user",
         isFinal: text.isFinal,
         time: text.time
