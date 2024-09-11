@@ -158,14 +158,15 @@ const Agent = (props: AgentProps) => {
 
   const websocketConnectHandler = (resp: string) => {
     console.log("In callback websocketConnectHandler resp = ", resp);
-    if (trulienceAvatarRef.current) {
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
-      console.log("anims loaded in websocket connect");
-    }
   }
 
   const loadProgress = (progressDetails: { [key: string]: any }) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
+    if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
+      console.error("In callback loadProgress percent = ", progressDetails.percent);
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+      console.error("anims loaded in loadProgress");
+    }
   }
 
   const eventCallbacks = {
