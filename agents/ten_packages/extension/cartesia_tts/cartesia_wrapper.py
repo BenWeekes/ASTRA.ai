@@ -10,10 +10,13 @@ from urllib.parse import urlparse
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+class CartesiaError(Exception):
+    """Custom exception class for Cartesia-related errors."""
+    pass
+
 class CartesiaConfig:
     # Configuration class for Cartesia API
     def __init__(self, api_key, model_id, voice_id, sample_rate, cartesia_version):
-        # Initialize configuration parameters
         self.api_key = api_key
         self.model_id = model_id
         self.voice_id = voice_id
@@ -23,7 +26,6 @@ class CartesiaConfig:
 class CartesiaWrapper:
     # Wrapper class for Cartesia API interactions
     def __init__(self, config: CartesiaConfig):
-        # Initialize wrapper with configuration
         self.config = config
         self.websocket = None
         self.context_id = 0
@@ -36,12 +38,21 @@ class CartesiaWrapper:
             logger.info("Connected to Cartesia WebSocket")
         except Exception as e:
             logger.error(f"Failed to connect to Cartesia API: {str(e)}")
-            raise
+            raise CartesiaError(f"Connection failed: {str(e)}")
 
-    async def synthesize(self, text):
+    async def synthesize(self, text: str):
         # Synthesize speech from text using Cartesia API
         if not self.websocket:
             await self.connect()
+
+        if text.startswith("PAUSE_"):
+            # Handle custom pause marker
+            try:
+                duration_ms = int(text.split("_")[1])
+                return self.generate_silence(duration_ms)
+            except (IndexError, ValueError):
+                logger.error(f"Invalid pause format: {text}")
+                raise CartesiaError(f"Invalid pause format: {text}")
 
         self.context_id += 1
         request = {
@@ -73,6 +84,8 @@ class CartesiaWrapper:
                     audio_data.extend(chunk_data)
                 elif message['type'] == 'done':
                     break
+                elif message['type'] == 'error':
+                    raise CartesiaError(f"Synthesis error: {message.get('error', 'Unknown error')}")
                 else:
                     logger.warning(f"Unknown message type: {message['type']}")
 
@@ -84,25 +97,16 @@ class CartesiaWrapper:
             return await self.synthesize(text)  # Retry the synthesis after reconnecting
         except Exception as e:
             logger.error(f"Error during synthesis: {str(e)}")
-            raise
+            raise CartesiaError(f"Synthesis failed: {str(e)}")
+
+    def generate_silence(self, duration_ms: int) -> bytes:
+        # Generate silent audio data
+        sample_rate = self.config.sample_rate
+        num_samples = int(sample_rate * duration_ms / 1000)
+        return b"\x00" * (num_samples * 2)  # Assuming 16-bit audio
 
     async def close(self):
         # Close WebSocket connection
         if self.websocket:
             await self.websocket.close()
             logger.info("Closed WebSocket connection to Cartesia API")
-
-    async def send_heartbeat(self):
-        # Send heartbeat message to keep connection alive
-        if self.websocket:
-            try:
-                await self.websocket.send(json.dumps({"type": "heartbeat"}))
-                logger.debug("Heartbeat sent")
-            except Exception as e:
-                logger.error(f"Failed to send heartbeat: {str(e)}")
-
-    async def start_heartbeat(self, interval=30):
-        # Start periodic heartbeat sending
-        while True:
-            await asyncio.sleep(interval)
-            await self.send_heartbeat()

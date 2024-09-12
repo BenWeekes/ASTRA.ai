@@ -15,7 +15,7 @@ from ten import (
     StatusCode,
     CmdResult,
 )
-from .cartesia_wrapper import CartesiaWrapper, CartesiaConfig
+from .cartesia_wrapper import CartesiaWrapper, CartesiaConfig, CartesiaError
 from .log import logger
 
 class CartesiaCallback:
@@ -65,10 +65,11 @@ class CartesiaTTSExtension(Extension):
         self.stopped = False
         self.thread = None
         self.callback = None
-        self.skip_patterns = [r'\bssml_\w+\b']
-
+        self.skip_patterns = [r'\bssml_\w+\b']  # List of patterns to skip
+        self.ten = None
 
     def on_start(self, ten: TenEnv) -> None:
+        self.ten = ten
         try:
             # Initialize Cartesia config and wrapper
             cartesia_config = CartesiaConfig(
@@ -117,33 +118,15 @@ class CartesiaTTSExtension(Extension):
         # Check if task is outdated
         return self.outdate_ts > ts
 
-    def async_handle(self, ten: TenEnv):
-        # Process queue items asynchronously
-        while not self.stopped:
-            try:
-                value = self.queue.get()
-                if value is None:
-                    break
-                input_text, ts = value
-
-                self.callback.set_input_ts(ts)
-
-                if self.callback.need_interrupt():
-                    logger.info("Drop outdated input")
-                    continue
-
-                logger.info(f"Processing input: {input_text}")
-
-                audio_data = self.loop.run_until_complete(self.cartesia.synthesize(input_text))
-                self.callback.process_audio(audio_data)
-
-            except Exception as e:
-                logger.exception(f"Error in async_handle: {e}")
-
     def process_input_text(self, input_text: str) -> str:
+        # Process input text to remove parts that should be skipped
         for pattern in self.skip_patterns:
             input_text = re.sub(pattern, '', input_text, flags=re.IGNORECASE)
         return input_text.strip()
+
+    def create_pause_text(self, duration_ms: int) -> str:
+        # Create pause text
+        return f"PAUSE_{duration_ms}_MS"
 
     def on_data(self, ten: TenEnv, data: Data) -> None:
         # Queue incoming text for processing
@@ -151,9 +134,46 @@ class CartesiaTTSExtension(Extension):
         if not input_text:
             return
 
+        # Handle the case of just a period or comma
+        if input_text.strip() in ['.', ',']:
+            pause_duration = 150 if input_text.strip() == '.' else 150
+            pause_text = self.create_pause_text(pause_duration)
+            self.queue.put(("PAUSE", pause_text, datetime.now()))
+            return
+
         processed_text = self.process_input_text(input_text)
-        if processed_text:
-            self.queue.put((processed_text, datetime.now()))
+
+        if processed_text.strip():
+            self.queue.put(("TEXT", processed_text, datetime.now()))
+        else:
+            logger.info("Processed text is empty. Skipping synthesis.")
+
+    def async_handle(self, ten: TenEnv):
+        # Process queue items asynchronously
+        while not self.stopped:
+            try:
+                value = self.queue.get()
+                if value is None:
+                    break
+
+                item_type, content, ts = value
+
+                self.callback.set_input_ts(ts)
+
+                if self.callback.need_interrupt():
+                    logger.info("Drop outdated input")
+                    continue
+
+                try:
+                    audio_data = self.loop.run_until_complete(self.cartesia.synthesize(content))
+                    self.callback.process_audio(audio_data)
+                except CartesiaError as e:
+                    logger.error(f"Failed to synthesize: {str(e)}. Moving to next item.")
+                    # Optionally, you could add some fallback behavior here, like playing an error sound
+
+            except Exception as e:
+                logger.exception(f"Error in async_handle: {e}")
+                # Continue processing the next item instead of breaking the loop
 
     def on_cmd(self, ten: TenEnv, cmd: Cmd) -> None:
         # Handle incoming commands
