@@ -191,8 +191,6 @@ const Agent = (props: AgentProps) => {
         eventCallbacks={eventCallbacks}
         width="100%"
         height="100%"
-        sttSource=""
-        ttsEnabled={false}
       >
       </TrulienceAvatar>
     </div>
