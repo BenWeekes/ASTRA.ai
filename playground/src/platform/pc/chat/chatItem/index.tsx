@@ -3,6 +3,7 @@ import styles from "./index.module.scss"
 import { usePrevious } from "@/common"
 import { use, useEffect, useMemo, useState } from "react"
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store/index';
 
 interface ChatItemProps {
   data: IChatItem
@@ -29,7 +30,7 @@ const AgentChatItem = (props: ChatItemProps) => {
 const UserChatItem = (props: ChatItemProps) => {
   const { data } = props
   const { text } = data
-  const userName = useSelector((state) => state.global.options.userName);
+  const userName = useSelector((state: RootState) => state.global.options.userName);
 
   return (
     <div className={`${styles.userChatItem} ${styles.chatItem}`}>
