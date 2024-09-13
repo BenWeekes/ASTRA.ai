@@ -28,6 +28,7 @@ const Description = () => {
   const language = useAppSelector(state => state.global.language)
   const voiceType = useAppSelector(state => state.global.voiceType)
   const graphName = useAppSelector(state => state.global.graphName)
+  const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -133,7 +134,7 @@ const Description = () => {
       </span>
 
 
-    <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''}`} onClick={onClickConnect}>
+    <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`} onClick={onClickConnect}>
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
         {!agentConnected ? "Connect" : "Disconnect"}
         {loading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}

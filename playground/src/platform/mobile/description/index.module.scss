@@ -62,6 +62,11 @@
     }
   }
 
+  .btnConnect.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;  // Prevent interaction
+  }
 
   .btnConnect.disconnect {
     background: #181A1D;

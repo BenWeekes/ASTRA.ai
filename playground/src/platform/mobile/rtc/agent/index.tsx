@@ -8,7 +8,7 @@ import { useRef, useState, useEffect } from "react";
 import { rtcManager } from "@/manager";
 import { ITextItem } from "@/types";
 import { FullScreenIcon } from "@/components/icons/fullsccreen";
-import { setFullscreen } from "@/store/reducers/global"
+import { setAvatarLoaded, setFullscreen } from "@/store/reducers/global"
 
 interface AgentProps {
   audioTrack?: IMicrophoneAudioTrack
@@ -166,6 +166,9 @@ const Agent = (props: AgentProps) => {
       console.error("In callback loadProgress percent = ", progressDetails.percent);
       trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
       console.error("anims loaded in loadProgress");
+
+      // set avatar loaded
+      appDispatch(setAvatarLoaded(true))
     }
   }
 
