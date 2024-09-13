@@ -5,6 +5,9 @@
   background: #0F0F11;
   overflow: hidden;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
   .header {
     height: 40px;
@@ -44,7 +47,8 @@
     // description 60px
     // paddingTop 16px 16px
     // menu header 40px
-    height: calc(100vh - 48px - 60px - 32px - 40px - 2px);
+    // height: calc(100vh - 48px - 60px - 32px - 40px - 2px);
+    height: 100%;
     overflow: hidden;
     box-sizing: border-box;
 
