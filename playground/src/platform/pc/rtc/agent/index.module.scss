@@ -13,6 +13,7 @@
   box-sizing: border-box;
   border-radius: 8px;
   border: 1px solid #272A2F;
+  overflow: hidden;
 
   .text {
     margin-top: 50px;
@@ -61,4 +62,24 @@
     width: 28px;
   }
 
+}
+
+.splashScreen {
+  color: transparent;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  /* background: black; */
+  overflow: hidden;
+  padding: 10px 8px;
+  top: 0px;
+
+  img {
+    color: transparent;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    background: black;
+  }
 }

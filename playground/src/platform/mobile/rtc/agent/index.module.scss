@@ -58,3 +58,12 @@
   }
 
 }
+
+.splashScreen {
+  color: transparent;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  z-index: 1;
+  top:0px;
+}

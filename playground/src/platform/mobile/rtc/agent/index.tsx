@@ -9,6 +9,8 @@ import { rtcManager } from "@/manager";
 import { ITextItem } from "@/types";
 import { FullScreenIcon } from "@/components/icons/fullsccreen";
 import { setAvatarLoaded, setFullscreen } from "@/store/reducers/global"
+import AmieSquareSplashScreen from "@/assets/splash-images/amie-square-mobile.png"
+import Image from "next/image";
 
 interface AgentProps {
   audioTrack?: IMicrophoneAudioTrack
@@ -34,6 +36,7 @@ const Agent = (props: AgentProps) => {
   const { userId } = options
 
   const isFullscreen = useAppSelector(state => state.global.isFullscreen)
+  const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
   const appDispatch = useAppDispatch()
 
   const animStrings = [
@@ -195,9 +198,17 @@ const Agent = (props: AgentProps) => {
         eventCallbacks={eventCallbacks}
         width="100%"
         height="100%"
-      >
-      </TrulienceAvatar>
+      ></TrulienceAvatar>
+
+      {/* Show splash screen until avatar loads */}
+      {!isAvatarLoaded && (
+        <Image
+          src={AmieSquareSplashScreen}
+          alt="SplashScreen"
+          className={styles.splashScreen}
+        />
+      )}
     </div>
-  )
+  );
 }
 export default Agent;
