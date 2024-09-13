@@ -27,19 +27,19 @@ export const LANGUAGE_OPTIONS: LanguageOptionItem[] = [
 ]
 export const GRAPH_OPTIONS: GraphOptionItem[] = [
   {
-    label: "Voice Agent with Vision - OpenAI LLM + Cartesia TTS",
+    label: "Trulience Avatar with Vision - OpenAI LLM + Cartesia TTS",
     value: "camera.va.openai.cartesia"
   },
   {
-    label: "Voice Agent - OpenAI LLM + Cartesia TTS",
+    label: "Trulience Avatar - OpenAI LLM + Cartesia TTS",
     value: "va.openai.cartesia"
   },
   {
-    label: "Voice Agent - OpenAI LLM + Azure TTS",
+    label: "Trulience Avatar - OpenAI LLM + Azure TTS",
     value: "va.openai.azure"
   },
   {
-    label: "Voice Agent with Vision - OpenAI LLM + Azure TTS",
+    label: "Trulience Avatar with Vision - OpenAI LLM + Azure TTS",
     value: "camera.va.openai.azure"
   }
 ]

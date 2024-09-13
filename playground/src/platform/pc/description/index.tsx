@@ -124,10 +124,11 @@ const Description = () => {
           disabled={agentConnected} options={GRAPH_OPTIONS}
           value={graphName} onChange={onGraphNameChange}></Select>
       
+          {/*
         <Select className={styles.languageSelect}
           disabled={agentConnected} options={LANGUAGE_OPTIONS}
           value={language} onChange={onLanguageChange}></Select>
-       
+         */}
         {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
       </span>
 

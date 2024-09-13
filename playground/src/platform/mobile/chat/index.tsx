@@ -47,11 +47,13 @@ const Chat = () => {
       <Select className={styles.graphName}
         disabled={agentConnected} options={GRAPH_OPTIONS}
         value={graphName} onChange={onGraphNameChange}></Select>
+             {/*
       <Select className={styles.languageSelect}
         options={LANGUAGE_OPTIONS}
         disabled={agentConnected}
         value={language} onChange={onLanguageChange}></Select>
       {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
+             */}
     </div>
     <div className={`${styles.content}`} >
       {chatItems.map((item, index) => {
