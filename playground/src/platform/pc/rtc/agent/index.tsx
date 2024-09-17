@@ -202,7 +202,7 @@ const Agent = (props: AgentProps) => {
       </TrulienceAvatar>
 
       {/* Show splash screen until avatar loads */}
-      {!isAvatarLoaded && (
+      {!agentConnected && (
         <div className={styles.splashScreen}>
           <Image 
             src={AmieDesktopSplashScreen} 

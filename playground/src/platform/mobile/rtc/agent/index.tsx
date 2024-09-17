@@ -152,6 +152,17 @@ const Agent = (props: AgentProps) => {
     };
   }, [audioTrack, agentConnected]);
 
+  // hide and show joystick(nipple)
+  useEffect(() => {
+    let message = ""
+    if(agentConnected) {
+      message = "<trl-enable-joystick />"
+    } else {
+      message = "<trl-disable-joystick />"
+    }
+    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar(message)
+  }, [agentConnected])
+
 
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
@@ -165,6 +176,8 @@ const Agent = (props: AgentProps) => {
 
   const loadProgress = (progressDetails: { [key: string]: any }) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
+    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-disable-joystick />")
+
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
       console.error("In callback loadProgress percent = ", progressDetails.percent);
       trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations=process.env.NEXT_PUBLIC_animationURL+'/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
@@ -201,7 +214,7 @@ const Agent = (props: AgentProps) => {
       ></TrulienceAvatar>
 
       {/* Show splash screen until avatar loads */}
-      {!isAvatarLoaded && (
+      {!agentConnected && (
         <Image
           src={AmieSquareSplashScreen}
           alt="SplashScreen"
