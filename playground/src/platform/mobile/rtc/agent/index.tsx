@@ -47,17 +47,17 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='https://digitalhuman.uk/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
+    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
   ];
 
   const musicString = [
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='https://digitalhuman.uk/assets/audio/music/DanceMusic.mp3' />"
+    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/DanceMusic.mp3' />"
   ];
 
   function getDance() {
@@ -98,7 +98,7 @@ const Agent = (props: AgentProps) => {
           if (textItem.text.includes('SSML_DANCE')) {
             ssml = getDance();
           } else if (textItem.text.includes('SSML_KISS')) {
-            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio='https://digitalhuman.uk/assets/audio/female/kiss.mp3' />";
+            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/female/kiss.mp3' />";
           } else if (textItem.text.includes('SSML_CHANGE_BG')) {
             ssml = getBG();
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
@@ -167,7 +167,7 @@ const Agent = (props: AgentProps) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
       console.error("In callback loadProgress percent = ", progressDetails.percent);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='https://digitalhuman.uk/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations=process.env.NEXT_PUBLIC_animationURL+'/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
       console.error("anims loaded in loadProgress");
 
       // set avatar loaded
