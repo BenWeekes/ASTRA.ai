@@ -47,17 +47,17 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model=process.env.NEXT_PUBLIC_animationURL+'/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
   ];
 
   const musicString = [
-    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/DanceMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/music/DanceMusic.mp3' />"
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/DanceMusic.mp3' />"
   ];
 
   function getDance() {
@@ -98,7 +98,7 @@ const Agent = (props: AgentProps) => {
           if (textItem.text.includes('SSML_DANCE')) {
             ssml = getDance();
           } else if (textItem.text.includes('SSML_KISS')) {
-            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio=process.env.NEXT_PUBLIC_animationURL+'/assets/audio/female/kiss.mp3' />";
+            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/female/kiss.mp3' />";
           } else if (textItem.text.includes('SSML_CHANGE_BG')) {
             ssml = getBG();
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
@@ -152,17 +152,17 @@ const Agent = (props: AgentProps) => {
     };
   }, [audioTrack, agentConnected]);
 
-  // hide and show joystick(nipple)
-  useEffect(() => {
-    let message = ""
-    if(agentConnected) {
-      message = "<trl-enable-joystick />"
-    } else {
-      message = "<trl-disable-joystick />"
-    }
-    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar(message)
-  }, [agentConnected])
-
+    // hide and show joystick(nipple)
+    useEffect(() => {
+      let message = ""
+      if(agentConnected) {
+        message = "<trl-enable-joystick />"
+      } else {
+        message = "<trl-disable-joystick />"
+      }
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar(message)
+    }, [agentConnected])
+  
 
   // Sample for listening to truilence notifications.
   // Refer https://trulience.com/docs#/client-sdk/sdk?id=trulience-events for a list of all the events fired by Trulience SDK.
@@ -176,12 +176,11 @@ const Agent = (props: AgentProps) => {
 
   const loadProgress = (progressDetails: { [key: string]: any }) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
-    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-disable-joystick />")
-
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
-      console.error("In callback loadProgress percent = ", progressDetails.percent);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations=process.env.NEXT_PUBLIC_animationURL+'/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
-      console.error("anims loaded in loadProgress");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-disable-joystick />")
+      console.log("In callback loadProgress percent = ", progressDetails.percent);
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURL+"/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+      console.log("anims loaded in loadProgress");
 
       // set avatar loaded
       appDispatch(setAvatarLoaded(true))
