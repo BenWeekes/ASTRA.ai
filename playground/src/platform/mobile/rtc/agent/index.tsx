@@ -172,6 +172,7 @@ const Agent = (props: AgentProps) => {
 
   const websocketConnectHandler = (resp: string) => {
     console.log("In callback websocketConnectHandler resp = ", resp);
+    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-disable-joystick />")
   }
 
   const loadProgress = (progressDetails: { [key: string]: any }) => {
