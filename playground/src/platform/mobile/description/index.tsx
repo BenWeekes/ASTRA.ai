@@ -86,6 +86,9 @@ const Description = () => {
     }
   }
 
+  // Show a loading indicator while connecting or loading the avatar.
+  const showLoading = loading || !isAvatarLoaded
+
   return <div className={styles.description}>
     <span className={styles.title}>Aime 2024</span>
     <span 
@@ -93,8 +96,8 @@ const Description = () => {
       className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`}  
       >
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
-        {!agentConnected ? "Connect" : "Disconnect"}
-        {loading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}
+        {!isAvatarLoaded ? "Loading " : !agentConnected ? "Connect" : "Disconnect"}
+        { showLoading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}
       </span>
     </span>
   </div>

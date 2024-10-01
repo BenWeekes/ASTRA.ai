@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  //basePath: '/ai-agent',
+  basePath: '/aime',
   // output: 'export',
 
   output: 'standalone',
