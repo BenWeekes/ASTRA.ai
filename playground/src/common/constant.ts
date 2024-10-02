@@ -1,5 +1,5 @@
 import { IOptions, ColorItem, LanguageOptionItem, VoiceOptionItem, GraphOptionItem } from "@/types"
-export const GITHUB_URL = "https://github.com/TEN-framework/ASTRA.ai"
+export const GITHUB_URL = "https://github.com/AgoraIO/openai-realtime-python"
 export const OPTIONS_KEY = "__options__"
 export const DEFAULT_OPTIONS: IOptions = {
   channel: "",
