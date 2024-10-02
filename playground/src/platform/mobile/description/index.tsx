@@ -7,6 +7,7 @@ import { message } from "antd"
 import { useEffect, useState } from "react"
 import { LoadingOutlined, } from "@ant-design/icons"
 import styles from "./index.module.scss"
+const { AGENT_SERVER_URL } = process.env;
 
 let intervalId: any
 
@@ -41,31 +42,45 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
-      await apiStopService(channel)
+      const url = `https://oai.agora.io/stop_agent`
+      const data = {
+        channel_name: channel,
+        uid: userId
+      }
+      let resp: any = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+      resp = (await resp.json()) || {}
+      const { code, msg } = resp || {}
+      if (code != 0) {
+        console.error(`code:${code},msg:${msg}`);
+      }
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
-      stopPing()
     } else {
-      const res = await apiStartService({
-        channel,
-        userId,
-        graphName,
-        language,
-        voiceType
+      const url = `${AGENT_SERVER_URL}/start_agent`
+      const data = {
+        channel_name: channel,
+        uid: userId
+      }
+      let resp: any = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      const { code, msg } = res || {}
+      resp = (await resp.json()) || {}
+      const { code, msg } = resp || {}
       if (code != 0) {
-        if (code == "10001") {
-          message.error("The number of users experiencing the program simultaneously has exceeded the limit. Please try again later.")
-        } else {
-          message.error(`code:${code},msg:${msg}`)
-        }
-        setLoading(false)
-        throw new Error(msg)
+        console.error(`code:${code},msg:${msg}`);
       }
       dispatch(setAgentConnected(true))
       message.success("Amie connected")
-      startPing()
     }
     setLoading(false)
   }

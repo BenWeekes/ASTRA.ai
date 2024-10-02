@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  basePath: '/aime',
+  //basePath: '/aime',
   // output: 'export',
 
   output: 'standalone',

@@ -17,6 +17,14 @@ import { VoiceIcon } from "@/components/icons"
 import { setVoiceType } from "@/store/reducers/global"
 import { setGraphName, setLanguage } from "@/store/reducers/global"
 import PdfSelect from "@/components/pdfSelect"
+import { NextRequest, NextResponse } from 'next/server';
+const { AGENT_SERVER_URL } = process.env;
+// Check if environment variables are available
+//if (!AGENT_SERVER_URL) {
+//  throw "Environment variables AGENT_SERVER_URL are not available";
+//}
+
+console.error('fff', process.env);
 
 let intervalId: any
 
@@ -51,31 +59,47 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
-      await apiStopService(channel)
+      const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/stop_agent`
+      const data = {
+        channel_name: channel,
+        uid: userId
+      }
+      let resp: any = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+      resp = (await resp.json()) || {}
+      const { code, msg } = resp || {}
+      if (code != 0) {
+        console.error(`code:${code},msg:${msg}`);
+      }
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
-      stopPing()
     } else {
-      const res = await apiStartService({
-        channel,
-        userId,
-        graphName,
-        language,
-        voiceType
+      //const url = `https://oai.agora.io/start_agent`
+      const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/start_agent`
+    console.error('AGENT_SERVER_URL',url);
+      const data = {
+        channel_name: channel,
+        uid: userId
+      }
+      let resp: any = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      const { code, msg } = res || {}
+      resp = (await resp.json()) || {}
+      const { code, msg } = resp || {}
       if (code != 0) {
-        if (code == "10001") {
-          message.error("The number of users experiencing the program simultaneously has exceeded the limit. Please try again later.")
-        } else {
-          message.error(`code:${code},msg:${msg}`)
-        }
-        setLoading(false)
-        throw new Error(msg)
+        console.error(`code:${code},msg:${msg}`);
       }
       dispatch(setAgentConnected(true))
       message.success("Amie connected")
-      startPing()
     }
     setLoading(false)
   }
@@ -113,7 +137,7 @@ const Description = () => {
 
   return <div className={styles.description}>
   
-    <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
+    <span className={styles.text}>Amie is an intelligent companion. Ask her to dance, play music or change the background</span>
       {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}
@@ -123,19 +147,20 @@ const Description = () => {
    */}
     <span className={styles.left}>
       </span>
+       {/*
       <span className={styles.right}>
         <Select className={styles.graphName}
           disabled={agentConnected} options={GRAPH_OPTIONS}
           value={graphName} onChange={onGraphNameChange}></Select>
       
-          {/*
+          
         <Select className={styles.languageSelect}
           disabled={agentConnected} options={LANGUAGE_OPTIONS}
           value={language} onChange={onLanguageChange}></Select>
-         */}
+       
         {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
       </span>
-
+  */}
 
     <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`} onClick={onClickConnect}>
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>

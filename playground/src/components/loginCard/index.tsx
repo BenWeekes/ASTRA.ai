@@ -66,7 +66,7 @@ const LoginCard = () => {
           <span className={styles.btnText}>Enter</span>
         </div>
       </div>
-      <div className={styles.version}>Hackathon 2024</div>
+      <div className={styles.version}>OpenAI Realtime Multi Modal</div>
     </section >
   </div >
 
