@@ -137,7 +137,7 @@ const Description = () => {
 
   return <div className={styles.description}>
   
-    <span className={styles.text}>Amie is an intelligent companion. Ask her to dance, play music or change the background</span>
+    <span className={styles.text}>Amie, your intelligent companion. Ask her to dance, play music or change the background</span>
       {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}
