@@ -17,6 +17,10 @@ import { VoiceIcon } from "@/components/icons"
 import { setVoiceType } from "@/store/reducers/global"
 import { setGraphName, setLanguage } from "@/store/reducers/global"
 import PdfSelect from "@/components/pdfSelect"
+import { NextRequest, NextResponse } from 'next/server';
+import { rtcManager } from "@/manager"
+const { AGENT_SERVER_URL } = process.env;
+
 
 let intervalId: any
 
@@ -52,10 +56,14 @@ const Description = () => {
     setLoading(true)
     if (agentConnected) {
       await apiStopService(channel)
+      await rtcManager.destroy()
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
       stopPing()
     } else {
+
+      await rtcManager.connect({ channel, userId })
+      
       const res = await apiStartService({
         channel,
         userId,

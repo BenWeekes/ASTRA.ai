@@ -7,6 +7,8 @@ import { message } from "antd"
 import { useEffect, useState } from "react"
 import { LoadingOutlined, } from "@ant-design/icons"
 import styles from "./index.module.scss"
+import { rtcManager } from "@/manager"
+const { AGENT_SERVER_URL } = process.env;
 
 let intervalId: any
 
@@ -41,11 +43,13 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
+      await rtcManager.destroy()
       await apiStopService(channel)
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
       stopPing()
     } else {
+      await rtcManager.connect({ channel, userId })
       const res = await apiStartService({
         channel,
         userId,

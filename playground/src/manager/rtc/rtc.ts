@@ -39,20 +39,38 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     }
   }
 
-  async createTracks() {
+  async createVideoTrack() {
+    if( this.localTracks.videoTrack ) return;
+
     try {
       const videoTrack = await AgoraRTC.createCameraVideoTrack()
       this.localTracks.videoTrack = videoTrack
     } catch (err) {
       console.error("Failed to create video track", err)
+      return null
     }
+    this.emit("localTracksChanged", this.localTracks)
+    return this.localTracks.videoTrack
+  }
+
+  async createMicTrack() {
+    // Don't create if already created
+    if( this.localTracks.audioTrack ) return;
+
     try {
       const audioTrack = await AgoraRTC.createMicrophoneAudioTrack()
       this.localTracks.audioTrack = audioTrack
     } catch (err) {
       console.error("Failed to create audio track", err)
+      return null
     }
     this.emit("localTracksChanged", this.localTracks)
+    return this.localTracks.audioTrack
+  }
+
+  async createTracks() {
+    await this.createVideoTrack()
+    await this.createMicTrack()
   }
 
   async publish() {
@@ -68,9 +86,22 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     }
   }
 
+  async connect({ channel, userId }: { channel: string; userId: number }) {
+    if(this._joined) return
+    
+    await this.createTracks()
+    await this.join({
+      channel,
+      userId
+    })
+    await this.publish()
+  }
+
   async destroy() {
     this.localTracks?.audioTrack?.close()
     this.localTracks?.videoTrack?.close()
+    this.emit("localTracksChanged", {})
+
     if (this._joined) {
       await this.client?.leave()
     }
