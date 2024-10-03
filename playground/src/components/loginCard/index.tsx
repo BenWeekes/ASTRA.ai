@@ -59,7 +59,7 @@ const LoginCard = () => {
         <span className={styles.text}>Aime <br></br> Your virtual companion</span>
       </div>
       <div className={styles.section}>
-        <input placeholder="Name" value={userName} onChange={onUserNameChange} ></input>
+        <input placeholder="Name" value={userName} onChange={onUserNameChange} autoComplete="off" ></input>
       </div>
       <div className={styles.section}>
         <div className={styles.btn} onClick={onClickJoin}>
