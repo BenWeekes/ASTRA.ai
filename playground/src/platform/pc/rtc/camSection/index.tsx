@@ -7,6 +7,8 @@ import { ICameraVideoTrack } from 'agora-rtc-sdk-ng';
 import { LocalStreamPlayer } from "../streamPlayer"
 import { useState, useEffect, useMemo } from 'react';
 import { useSmallScreen } from "@/common"
+import { rtcManager } from "@/manager";
+import { message } from "antd";
 
 interface CamSectionProps {
   videoTrack?: ICameraVideoTrack
@@ -14,7 +16,7 @@ interface CamSectionProps {
 
 const CamSection = (props: CamSectionProps) => {
   const { videoTrack } = props
-  const [videoMute, setVideoMute] = useState(false)
+  const [videoMute, setVideoMute] = useState(true)
   const { xs } = useSmallScreen()
 
   const CamText = useMemo(() => {
@@ -22,10 +24,23 @@ const CamSection = (props: CamSectionProps) => {
   }, [xs])
 
   useEffect(() => {
+    setVideoMute(!videoTrack)
+  }, [videoTrack])
+
+  useEffect(() => {
     videoTrack?.setMuted(videoMute)
   }, [videoTrack, videoMute])
 
-  const onClickMute = () => {
+  const onClickMute = async () => {
+    // Create a track, if not created
+    if(!videoTrack) {
+      const track = await rtcManager.createVideoTrack();
+      if(!track) { 
+        message.error("Error encountered while accessing the camera.")
+        return 
+      }
+    }
+
     setVideoMute(!videoMute)
   }
 

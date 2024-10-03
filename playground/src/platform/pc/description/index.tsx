@@ -18,6 +18,7 @@ import { setVoiceType } from "@/store/reducers/global"
 import { setGraphName, setLanguage } from "@/store/reducers/global"
 import PdfSelect from "@/components/pdfSelect"
 import { NextRequest, NextResponse } from 'next/server';
+import { rtcManager } from "@/manager"
 const { AGENT_SERVER_URL } = process.env;
 
 
@@ -56,6 +57,8 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
+      await rtcManager.destroy()
+      
       const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/stop_agent`
       const data = {
         channel_name: channel,
@@ -73,6 +76,9 @@ const Description = () => {
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
     } else {
+      
+      await rtcManager.connect({ channel, userId })
+
       const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/start_agent`
       const data = {
         channel_name: channel,

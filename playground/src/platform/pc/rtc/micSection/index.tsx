@@ -7,6 +7,8 @@ import { MicIcon } from "@/components/icons"
 import styles from "./index.module.scss"
 import { IMicrophoneAudioTrack } from 'agora-rtc-sdk-ng';
 import MicSelect from "./micSelect";
+import { rtcManager } from "@/manager"
+import { message } from "antd"
 
 interface MicSectionProps {
   audioTrack?: IMicrophoneAudioTrack
@@ -14,7 +16,7 @@ interface MicSectionProps {
 
 const MicSection = (props: MicSectionProps) => {
   const { audioTrack } = props
-  const [audioMute, setAudioMute] = useState(false)
+  const [audioMute, setAudioMute] = useState(true)
   const [mediaStreamTrack, setMediaStreamTrack] = useState<MediaStreamTrack>()
   const { xs } = useSmallScreen()
 
@@ -23,6 +25,7 @@ const MicSection = (props: MicSectionProps) => {
   }, [xs])
 
   useEffect(() => {
+    setAudioMute(!audioTrack) // ON MIC
     audioTrack?.on("track-updated", onAudioTrackupdated)
     if (audioTrack) {
       setMediaStreamTrack(audioTrack.getMediaStreamTrack())
@@ -44,7 +47,16 @@ const MicSection = (props: MicSectionProps) => {
     setMediaStreamTrack(track)
   }
 
-  const onClickMute = () => {
+  const onClickMute = async () => {
+    // Create a track, if not created
+    if(!audioTrack) {
+      const track = await rtcManager.createMicTrack();
+      if(!track) { 
+        message.error("Error encountered while accessing the microphone.")
+        return 
+      }
+    }
+
     setAudioMute(!audioMute)
   }
 

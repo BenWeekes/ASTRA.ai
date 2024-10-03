@@ -7,6 +7,7 @@ import { message } from "antd"
 import { useEffect, useState } from "react"
 import { LoadingOutlined, } from "@ant-design/icons"
 import styles from "./index.module.scss"
+import { rtcManager } from "@/manager"
 const { AGENT_SERVER_URL } = process.env;
 
 let intervalId: any
@@ -43,6 +44,7 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
+      await rtcManager.destroy()
       const url = `https://oai.agora.io/stop_agent`
       const data = {
         channel_name: channel,
@@ -63,6 +65,9 @@ const Description = () => {
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
     } else {
+
+      await rtcManager.connect({ channel, userId })
+
       const url = `${AGENT_SERVER_URL}/start_agent`
       const data = {
         channel_name: channel,
