@@ -121,33 +121,36 @@ const Agent = (props: AgentProps) => {
   useEffect(() => {
     // Check if the ref is set and call a method on it
     if (trulienceAvatarRef.current) {
-      console.log("Setting MediaStream on TrulienceAvatar 1", mediaStream);
       // Set the media stream to make avatar speak the text.
+      console.error("Setting MediaStream on TrulienceAvatar to null ");
       trulienceAvatarRef.current?.setMediaStream(null);
-      trulienceAvatarRef.current?.setMediaStream(mediaStream);
+      if (mediaStream!=null) {
+        console.error("Setting MediaStream on TrulienceAvatar 1", mediaStream);
+        trulienceAvatarRef.current?.setMediaStream(mediaStream);
+      }
     } else {
-      console.log("Not Calling setMediaStream");
+      console.error("Not Calling setMediaStream");
     }
   }, [mediaStream])
 
   useEffect(() => {
     // Make sure we create media stream only if not available.
-    console.log('audioTrack', audioTrack);
+    console.log('audioTrack', audioTrack, 'agentConnected',agentConnected);
     if (audioTrack && !mediaStream && agentConnected) {
       //audioTrack.setVolume(0);
       // Create and set the media stream object.
       const stream = new MediaStream([audioTrack.getMediaStreamTrack()]);
       setMediaStream(stream);
-      console.log("Created MediaStream = ", stream, audioTrack);
+      console.error("Created MediaStream = ", stream, audioTrack);
     } else {
       if (!agentConnected && trulienceAvatarRef.current) {
         trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-stop-background-audio immediate='true' />");
       }
-      console.log("Setting mediaStream null");
+      console.error("Setting local mediaStream null");
       setMediaStream(null);
     }
     return () => {
-      console.log("Cleanup - setting mediastream null");
+      console.error("Cleanup - setting local mediastream null");
       setMediaStream(null);
     };
   }, [audioTrack, agentConnected]);

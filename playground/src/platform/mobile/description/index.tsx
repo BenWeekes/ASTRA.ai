@@ -23,9 +23,10 @@ const Description = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    /*
     if (channel) {
       checkAgentConnected()
-    }
+    }*/
   }, [channel])
 
 
@@ -76,9 +77,6 @@ const Description = () => {
       })
       resp = (await resp.json()) || {}
       const { code, msg } = resp || {}
-      if (code != 0) {
-        console.error(`code:${code},msg:${msg}`);
-      }
       dispatch(setAgentConnected(true))
       message.success("Amie connected")
     }

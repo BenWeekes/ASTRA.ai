@@ -19,12 +19,7 @@ import { setGraphName, setLanguage } from "@/store/reducers/global"
 import PdfSelect from "@/components/pdfSelect"
 import { NextRequest, NextResponse } from 'next/server';
 const { AGENT_SERVER_URL } = process.env;
-// Check if environment variables are available
-//if (!AGENT_SERVER_URL) {
-//  throw "Environment variables AGENT_SERVER_URL are not available";
-//}
 
-console.error('fff', process.env);
 
 let intervalId: any
 
@@ -36,13 +31,15 @@ const Description = () => {
   const language = useAppSelector(state => state.global.language)
   const voiceType = useAppSelector(state => state.global.voiceType)
   const graphName = useAppSelector(state => state.global.graphName)
-  const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
+  const isAvatarLoaded = true; //useAppSelector(state => state.global.isAvatarLoaded)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    /*
     if (channel) {
       checkAgentConnected()
     }
+      */
   }, [channel])
 
 
@@ -73,15 +70,10 @@ const Description = () => {
       })
       resp = (await resp.json()) || {}
       const { code, msg } = resp || {}
-      if (code != 0) {
-        console.error(`code:${code},msg:${msg}`);
-      }
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
     } else {
-      //const url = `https://oai.agora.io/start_agent`
       const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/start_agent`
-    console.error('AGENT_SERVER_URL',url);
       const data = {
         channel_name: channel,
         uid: userId
@@ -95,9 +87,7 @@ const Description = () => {
       })
       resp = (await resp.json()) || {}
       const { code, msg } = resp || {}
-      if (code != 0) {
-        console.error(`code:${code},msg:${msg}`);
-      }
+
       dispatch(setAgentConnected(true))
       message.success("Amie connected")
     }

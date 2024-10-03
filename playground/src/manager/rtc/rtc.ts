@@ -31,7 +31,7 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       //const appId=process.env.NEXT_PUBLIC_appId; //'20b7c51ff4c644ab80cf5a4e646b0537';
       const appId='20b7c51ff4c644ab80cf5a4e646b0537';
       await this.client?.join(appId, channel,null,null);//, null, 22);
-      console.error('JOINED '+appId+" "+channel);
+      console.error('JOINED Channel '+appId+" "+channel);
       this._joined = true;
     }
   }
@@ -82,6 +82,7 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       this.emit("networkQuality", quality)
     })
     this.client.on("user-published", async (user, mediaType) => {
+      console.error('user-published '+user.uid,mediaType);
       await this.client.subscribe(user, mediaType)
       if (mediaType === "audio") {
         this._playAudio(user.audioTrack)
@@ -93,12 +94,26 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       })
     })
     this.client.on("user-unpublished", async (user, mediaType) => {
-      await this.client.unsubscribe(user, mediaType)
+      console.error('user-unpublished '+user.uid,mediaType);
+   
+      //await this.client.unsubscribe(user, mediaType)
+      console.error('unpublished audio track',user.audioTrack);
+      /*
       this.emit("remoteUserChanged", {
         userId: user.uid,
         audioTrack: user.audioTrack,
         videoTrack: user.videoTrack,
       })
+        */
+        
+    })
+    this.client.on("user-left", async (user) => {
+      console.error('user-left '+user.uid);
+      this.emit("remoteUserChanged", {
+        userId: user.uid,
+        audioTrack: null,
+        videoTrack:null,
+      })    
     })
     this.client.on("stream-message", (uid: UID, stream: any) => {
       this._praseData(stream)
@@ -122,7 +137,7 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
         return;
       }
 
-      console.error("[test] textstream raw data 3", innerContent, transcript)
+      console.error("[CHAT transcript] ", transcript)
       //const { stream_id, is_final, text, text_ts, data_type } = textstream
       let isFinal = true
       const textItem: ITextItem = {} as ITextItem
@@ -137,19 +152,16 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     }
   }
 
-
   _playAudio(audioTrack: IMicrophoneAudioTrack | IRemoteAudioTrack | undefined) {
     if (audioTrack && !audioTrack.isPlaying) {
       //audioTrack.play()
     }
   }
 
-
   private _resetData() {
     this.localTracks = {}
     this._joined = false
   }
 }
-
 
 export const rtcManager = new RtcManager()
