@@ -23,14 +23,14 @@ const Header = () => {
 
 
   return <div className={styles.header}>
-    <span className={styles.logoWrapper}>
-      <LogoIcon size="small"></LogoIcon>
-    </span>
     <InfoPopover>
-      <span className={styles.content}>
+      <span className={styles.logoWrapper}>
+        <LogoIcon size="small"></LogoIcon>
+      </span>
+      {/* <span className={styles.content}>
         <InfoIcon></InfoIcon>
         <span className={styles.text}>{channel}</span>
-      </span>
+      </span> */}
     </InfoPopover>
     <div className={styles.links}>
       <Network></Network>
