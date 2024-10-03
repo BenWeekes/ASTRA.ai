@@ -8,6 +8,7 @@ import { GithubIcon, HeartIcon, LogoIcon } from "../icons"
 import { GITHUB_URL, getRandomUserId, useAppDispatch, getRandomChannel } from "@/common"
 import { setOptions } from "@/store/reducers/global"
 import styles from "./index.module.scss"
+import { LoadingOutlined } from "@ant-design/icons"
 
 
 const { version } = packageData
@@ -16,6 +17,7 @@ const LoginCard = () => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [userName, setUserName] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const onClickGithub = () => {
     if (typeof window !== "undefined") {
@@ -36,6 +38,8 @@ const LoginCard = () => {
       message.error("please input your name")
       return
     }
+
+    setLoading(true)
     const userId = getRandomUserId()
     dispatch(setOptions({
       userName,
@@ -45,6 +49,11 @@ const LoginCard = () => {
     router.push("/home")
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onClickJoin();
+    }
+  };
 
   return <div className={styles.card}>
     <section className={styles.top}>
@@ -59,11 +68,18 @@ const LoginCard = () => {
         <span className={styles.text}>Aime <br></br> Your virtual companion</span>
       </div>
       <div className={styles.section}>
-        <input placeholder="Name" value={userName} onChange={onUserNameChange} autoComplete="off" ></input>
+        <input
+          placeholder="Name"
+          value={userName}
+          onChange={onUserNameChange}
+          onKeyDown={handleKeyDown}
+          autoComplete="off"
+        ></input>
       </div>
       <div className={styles.section}>
         <div className={styles.btn} onClick={onClickJoin}>
           <span className={styles.btnText}>Enter</span>
+          {loading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}
         </div>
       </div>
       <div className={styles.version}>Hackathon 2024</div>
