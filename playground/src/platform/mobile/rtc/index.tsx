@@ -49,12 +49,9 @@ const Rtc = () => {
     rtcManager.on("localTracksChanged", onLocalTracksChanged)
     rtcManager.on("textChanged", onTextChanged)
     rtcManager.on("remoteUserChanged", onRemoteUserChanged)
-    await rtcManager.createTracks()
-    await rtcManager.join({
-      channel,
-      userId
-    })
-    await rtcManager.publish()
+    // await rtcManager.createTracks()
+    // await rtcManager.join({ channel, userId })
+    // await rtcManager.publish()
     dispatch(setRoomConnected(true))
     hasInit = true
   }
@@ -64,7 +61,7 @@ const Rtc = () => {
     rtcManager.off("textChanged", onTextChanged)
     rtcManager.off("localTracksChanged", onLocalTracksChanged)
     rtcManager.off("remoteUserChanged", onRemoteUserChanged)
-    await rtcManager.destroy()
+    // await rtcManager.destroy()
     dispatch(setRoomConnected(false))
     hasInit = false
   }
@@ -76,13 +73,8 @@ const Rtc = () => {
 
   const onLocalTracksChanged = (tracks: IUserTracks) => {
     console.log("[test] onLocalTracksChanged", tracks)
-    const { videoTrack, audioTrack } = tracks
-    if (videoTrack) {
-      setVideoTrack(videoTrack)
-    }
-    if (audioTrack) {
-      setAudioTrack(audioTrack)
-    }
+    setVideoTrack(tracks.videoTrack)
+    setAudioTrack(tracks.audioTrack)
   }
 
   const onTextChanged = (text: ITextItem) => {
@@ -107,12 +99,10 @@ const Rtc = () => {
 
   return <section className={styles.rtc}>
     <Agent audioTrack={remoteuser?.audioTrack}></Agent>
-    <div className={styles.you}>
-      {/*
+    {/* <div className={styles.you}>
       <MicSection audioTrack={audioTrack}></MicSection>
-      */}
       <CamSection videoTrack={videoTrack}></CamSection>
-    </div>
+    </div> */}
   </section>
 }
 
