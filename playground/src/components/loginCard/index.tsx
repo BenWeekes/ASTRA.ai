@@ -31,7 +31,9 @@ const LoginCard = () => {
     setUserName(value)
   }
 
-
+  const onFocus = (event: any) => {
+    event.target.setAttribute('autocomplete', 'off');
+  }
 
   const onClickJoin = () => {
     if (!userName) {
@@ -69,10 +71,13 @@ const LoginCard = () => {
       </div>
       <div className={styles.section}>
         <input
+          key="input-box"
           placeholder="Name"
           value={userName}
+          name={"name " + Math.random()}
           onChange={onUserNameChange}
           onKeyDown={handleKeyDown}
+          onFocus={onFocus}
           autoComplete="off"
         ></input>
       </div>
@@ -86,8 +91,6 @@ const LoginCard = () => {
     </section >
   </div >
 
-
-  return
 }
 
 export default LoginCard
