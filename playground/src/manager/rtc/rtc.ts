@@ -96,15 +96,15 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     this.client.on("user-unpublished", async (user, mediaType) => {
       console.error('user-unpublished '+user.uid,mediaType);
    
-      //await this.client.unsubscribe(user, mediaType)
+      await this.client.unsubscribe(user, mediaType)
       console.error('unpublished audio track',user.audioTrack);
-      /*
+      
       this.emit("remoteUserChanged", {
         userId: user.uid,
         audioTrack: user.audioTrack,
         videoTrack: user.videoTrack,
       })
-        */
+        
         
     })
     this.client.on("user-left", async (user) => {
@@ -125,7 +125,13 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     // const textstream = protoRoot.Agora.SpeechToText.lookup("Text").decode(data)
     let decoder = new TextDecoder('utf-8')
     let decodedMessage = decoder.decode(data)
+
+    console.error('decodedMessage',decodedMessage);
+
+    return;
+    console.error('JSON.parse(decodedMessage)',JSON.parse(decodedMessage));
     const textstream = JSON.parse(decodedMessage)
+
     try {
     
       let innerContent = null;
