@@ -116,52 +116,38 @@ const Agent = (props: AgentProps) => {
     });
   }
 
-  // Provide the media stream to the TrulienceAvatar component.
   useEffect(() => {
-    // Check if the ref is set and call a method on it
-    if (trulienceAvatarRef.current) {
-      console.log("Setting MediaStream on TrulienceAvatar 1", mediaStream);
-      // Set the media stream to make avatar speak the text.
-      trulienceAvatarRef.current?.setMediaStream(null);
-      trulienceAvatarRef.current?.setMediaStream(mediaStream);
-    } else {
-      console.log("Not Calling setMediaStream");
-    }
-  }, [mediaStream])
-
-  useEffect(() => {
-    // Make sure we create media stream only if not available.
-    console.log('audioTrack', audioTrack, 'agentConnected', agentConnected);
-    if (audioTrack && !mediaStream && agentConnected) {
-      //audioTrack.setVolume(0);
+    // create media stream if audioTrack changes and agent is connected.
+    if (audioTrack && agentConnected && trulienceAvatarRef.current) {
       // Create and set the media stream object.
       const stream = new MediaStream([audioTrack.getMediaStreamTrack()]);
-      setMediaStream(stream);
+      // Set the media stream to make avatar speak the text.
+      trulienceAvatarRef.current?.setMediaStream(null);
+      trulienceAvatarRef.current?.setMediaStream(stream);
       console.log("Created MediaStream = ", stream, audioTrack);
-    } else {
-      if (!agentConnected && trulienceAvatarRef.current) {
-        trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-stop-background-audio immediate='true' />");
-
-      }
-      console.log("Setting mediaStream null");
-      setMediaStream(null);
     }
+
+    if (!agentConnected && trulienceAvatarRef.current) {
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-stop-background-audio immediate='true' />");
+    }
+
     return () => {
-      console.log("Cleanup - setting mediastream null");
-      setMediaStream(null);
+      console.log("Cleanup - setting media-stream null", trulienceAvatarRef.current);
+      if(trulienceAvatarRef.current)
+        trulienceAvatarRef.current.setMediaStream(null);
     };
   }, [audioTrack, agentConnected]);
 
-    // hide and show joystick(nipple)
-    useEffect(() => {
-      let message = ""
-      if(agentConnected) {
-        message = "<trl-enable-joystick />"
-      } else {
-        message = "<trl-disable-joystick />"
-      }
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar(message)
-    }, [agentConnected])
+  // hide and show joystick(nipple)
+  useEffect(() => {
+    let message = ""
+    if(agentConnected) {
+      message = "<trl-enable-joystick />"
+    } else {
+      message = "<trl-disable-joystick />"
+    }
+    trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar(message)
+  }, [agentConnected])
   
 
   // Sample for listening to truilence notifications.

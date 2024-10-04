@@ -101,6 +101,7 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     this.localTracks?.audioTrack?.close()
     this.localTracks?.videoTrack?.close()
     this.emit("localTracksChanged", {})
+    this.emit("remoteUserChanged", null)
 
     if (this._joined) {
       await this.client?.leave()
