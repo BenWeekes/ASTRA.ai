@@ -86,7 +86,8 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
   async connect({ channel, userId }: { channel: string; userId: number }) {
     if(this._joined) return
     
-    await this.createTracks()
+    // await this.createTracks()
+    await this.createMicTrack()   // currently we only support mic input
     await this.join({
       channel,
       userId

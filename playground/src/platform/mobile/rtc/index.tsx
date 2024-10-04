@@ -99,12 +99,10 @@ const Rtc = () => {
 
   return <section className={styles.rtc}>
     <Agent audioTrack={remoteuser?.audioTrack}></Agent>
-    <div className={styles.you}>
-      {/*
+    {/* <div className={styles.you}>
       <MicSection audioTrack={audioTrack}></MicSection>
-      */}
       <CamSection videoTrack={videoTrack}></CamSection>
-    </div>
+    </div> */}
   </section>
 }
 

@@ -96,7 +96,7 @@ const Rtc = () => {
       {/* microphone */}
       <MicSection audioTrack={audioTrack}></MicSection>
       {/* camera */}
-      <CamSection videoTrack={videoTrack}></CamSection>
+      {/* <CamSection videoTrack={videoTrack}></CamSection> */}
     </div>
     
   </section>

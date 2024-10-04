@@ -9,7 +9,7 @@ import { rtcManager } from "@/manager";
 import { ITextItem } from "@/types";
 import { FullScreenIcon } from "@/components/icons/fullsccreen";
 import { setAvatarLoaded, setFullscreen } from "@/store/reducers/global"
-import AmieSquareSplashScreen from "@/assets/splash-images/amie-square-mobile.png"
+import AmieSplashScreen from "@/assets/splash-images/amie-mobile.png"
 import Image from "next/image";
 
 interface AgentProps {
@@ -216,7 +216,7 @@ const Agent = (props: AgentProps) => {
       {/* Show splash screen until avatar loads */}
       {!agentConnected && (
         <Image
-          src={AmieSquareSplashScreen}
+          src={AmieSplashScreen}
           alt="SplashScreen"
           className={styles.splashScreen}
         />
