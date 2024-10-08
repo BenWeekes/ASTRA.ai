@@ -94,7 +94,7 @@ const Description = () => {
   const showLoading = loading || !isAvatarLoaded
 
   return <div className={styles.description}>
-    <span className={styles.title}>Aime 2024</span>
+    <span className={styles.title}>Amy 2024</span>
     <span 
       onClick={onClickConnect}
       className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`}  
