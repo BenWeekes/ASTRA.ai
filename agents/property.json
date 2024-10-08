@@ -2205,8 +2205,8 @@
                     {
                         "type": "extension",
                         "extension_group": "tools",
-                        "addon": "weatherapi_tool_python",
-                        "name": "weatherapi_tool_python",
+                        "addon": "ssml_tool_python",
+                        "name": "ssml_tool_python",
                         "property": {
                             "api_key": "${env:WEATHERAPI_API_KEY}"
                         }
@@ -2230,7 +2230,7 @@
                     },
                     {
                         "extension_group": "tools",
-                        "extension": "weatherapi_tool_python",
+                        "extension": "ssml_tool_python",
                         "cmd": [
                             {
                                 "name": "tool_register",
@@ -2238,6 +2238,17 @@
                                     {
                                         "extension_group": "llm",
                                         "extension": "openai_v2v_python"
+                                    }
+                                ]
+                            }
+                        ],
+			 "data": [
+                            {
+                                "name": "text_data",
+                                "dest": [
+                                    {
+                                        "extension_group": "transcriber",
+                                        "extension": "message_collector"
                                     }
                                 ]
                             }
@@ -2283,7 +2294,7 @@
                                 "dest": [
                                     {
                                         "extension_group": "tools",
-                                        "extension": "weatherapi_tool_python"
+                                        "extension": "ssml_tool_python"
                                     }
                                 ]
                             }
