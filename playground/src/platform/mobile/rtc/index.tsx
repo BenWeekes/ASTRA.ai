@@ -78,7 +78,7 @@ const Rtc = () => {
   }
 
   const onTextChanged = (text: ITextItem) => {
-    if (text.dataType == "transcribe") {
+    if (text.dataType == "transcribe" && text.text.indexOf('SSML_')==-1) {
       //console.error('text.text', text.text);
       
       const isAgent = Number(text.uid) != Number(userId)

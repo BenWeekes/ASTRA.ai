@@ -92,7 +92,7 @@ const Agent = (props: AgentProps) => {
         const isAgent = Number(textItem.uid) != Number(userId);
         if (isAgent) {
           let trulienceObj = trulienceAvatarRef.current?.getTrulienceObject();
-          //console.log("Received message for avatar - ", lastChatTime, textItem.time);
+          console.log("Received message for avatar - ", lastChatTime, textItem.text);
           lastChatTime = textItem.time;
           let ssml = "";
           if (textItem.text.includes('SSML_DANCE')) {

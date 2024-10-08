@@ -24,9 +24,9 @@ const getInitialState = (): InitialState => {
     language: "en-US",
     voiceType: "female",
     chatItems: [],
-    //graphName: "camera.va.openai.azure"
+    graphName: "va.openai.v2v",
     isFullscreen: false,
-    graphName: "camera.va.openai.cartesia",
+    //graphName: "camera.va.openai.cartesia",
     isAvatarLoaded: false
   }
 }
@@ -60,24 +60,24 @@ export const globalSlice = createSlice({
         // has last final Item
         if (time <= LastFinalItem.time) {
           // discard
-          console.log("[test] addChatItem, time < last final item, discard!:", text, isFinal, type)
+          //console.log("[test] addChatItem, time < last final item, discard!:", text, isFinal, type)
           return
         } else {
           if (LastNonFinalItem) {
-            console.log("[test] addChatItem, update last item(none final):", text, isFinal, type)
+           // console.log("[test] addChatItem, update last item(none final):", text, isFinal, type)
             state.chatItems[LastNonFinalIndex] = action.payload
           } else {
-            console.log("[test] addChatItem, add new item:", text, isFinal, type)
+           // console.log("[test] addChatItem, add new item:", text, isFinal, type)
             state.chatItems.push(action.payload)
           }
         }
       } else {
         // no last final Item
         if (LastNonFinalItem) {
-          console.log("[test] addChatItem, update last item(none final):", text, isFinal, type)
+         // console.log("[test] addChatItem, update last item(none final):", text, isFinal, type)
           state.chatItems[LastNonFinalIndex] = action.payload
         } else {
-          console.log("[test] addChatItem, add new item:", text, isFinal, type)
+        //  console.log("[test] addChatItem, add new item:", text, isFinal, type)
           state.chatItems.push(action.payload)
         }
       }

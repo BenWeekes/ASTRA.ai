@@ -32,15 +32,13 @@ const Description = () => {
   const language = useAppSelector(state => state.global.language)
   const voiceType = useAppSelector(state => state.global.voiceType)
   const graphName = useAppSelector(state => state.global.graphName)
-  const isAvatarLoaded = true; //useAppSelector(state => state.global.isAvatarLoaded)
+  const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    /*
     if (channel) {
       checkAgentConnected()
     }
-      */
   }, [channel])
 
 
@@ -57,45 +55,35 @@ const Description = () => {
     }
     setLoading(true)
     if (agentConnected) {
+      await apiStopService(channel)
       await rtcManager.destroy()
-      
-      const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/stop_agent`
-      const data = {
-        channel_name: channel,
-        uid: userId
-      }
-      let resp: any = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-      resp = (await resp.json()) || {}
-      const { code, msg } = resp || {}
       dispatch(setAgentConnected(false))
       message.success("Amie disconnected")
+      stopPing()
     } else {
-      
+
       await rtcManager.connect({ channel, userId })
-
-      const url = `${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/start_agent`
-      const data = {
-        channel_name: channel,
-        uid: userId
-      }
-      let resp: any = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      
+      const res = await apiStartService({
+        channel,
+        userId,
+        graphName,
+        language,
+        voiceType
       })
-      resp = (await resp.json()) || {}
-      const { code, msg } = resp || {}
-
+      const { code, msg } = res || {}
+      if (code != 0) {
+        if (code == "10001") {
+          message.error("The number of users experiencing the program simultaneously has exceeded the limit. Please try again later.")
+        } else {
+          message.error(`code:${code},msg:${msg}`)
+        }
+        setLoading(false)
+        throw new Error(msg)
+      }
       dispatch(setAgentConnected(true))
       message.success("Amie connected")
+      startPing()
     }
     setLoading(false)
   }
@@ -133,7 +121,7 @@ const Description = () => {
 
   return <div className={styles.description}>
   
-    <span className={styles.text}>Amie, your intelligent companion. Ask her to dance, play music or change the background</span>
+    <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
       {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}
@@ -143,20 +131,19 @@ const Description = () => {
    */}
     <span className={styles.left}>
       </span>
-       {/*
       <span className={styles.right}>
         <Select className={styles.graphName}
           disabled={agentConnected} options={GRAPH_OPTIONS}
           value={graphName} onChange={onGraphNameChange}></Select>
       
-          
+          {/*
         <Select className={styles.languageSelect}
           disabled={agentConnected} options={LANGUAGE_OPTIONS}
           value={language} onChange={onLanguageChange}></Select>
-       
+         */}
         {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
       </span>
-  */}
+
 
     <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`} onClick={onClickConnect}>
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
