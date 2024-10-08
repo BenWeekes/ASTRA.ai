@@ -46,7 +46,7 @@ const Description = () => {
       await rtcManager.destroy()
       await apiStopService(channel)
       dispatch(setAgentConnected(false))
-      message.success("Amie disconnected")
+      message.success("Amy disconnected")
       stopPing()
     } else {
       await rtcManager.connect({ channel, userId })
@@ -68,7 +68,7 @@ const Description = () => {
         throw new Error(msg)
       }
       dispatch(setAgentConnected(true))
-      message.success("Amie connected")
+      message.success("Amy connected")
       startPing()
     }
     setLoading(false)

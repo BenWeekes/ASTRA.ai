@@ -58,7 +58,7 @@ const Description = () => {
       await apiStopService(channel)
       await rtcManager.destroy()
       dispatch(setAgentConnected(false))
-      message.success("Amie disconnected")
+      message.success("Amy disconnected")
       stopPing()
     } else {
 
@@ -82,7 +82,7 @@ const Description = () => {
         throw new Error(msg)
       }
       dispatch(setAgentConnected(true))
-      message.success("Amie connected")
+      message.success("Amy connected")
       startPing()
     }
     setLoading(false)
@@ -121,7 +121,7 @@ const Description = () => {
 
   return <div className={styles.description}>
   
-    <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
+    <span className={styles.text}>Amy is an intelligent companion powered by TEN</span>
       {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}

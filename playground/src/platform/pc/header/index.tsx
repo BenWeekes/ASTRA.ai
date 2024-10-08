@@ -29,7 +29,7 @@ const Header = () => {
     <InfoPopover>
       <span className={styles.content}>
         <HeartIcon></HeartIcon>
-        <span className={styles.text}>Amie 2024&nbsp;</span>
+        <span className={styles.text}>Amy 2024&nbsp;</span>
         <HeartIcon></HeartIcon>
       </span>
     </InfoPopover>
