@@ -65,7 +65,7 @@ const LoginCard = () => {
     <section className={styles.content}>
       <div className={styles.title}>
         <HeartIcon transform="scale(1.5 1.5)"></HeartIcon>
-        <span className={styles.text}>Aime <br></br> Your virtual companion</span>
+        <span className={styles.text}>Amy <br></br> Your virtual companion</span>
       </div>
       <div className={styles.section}>
         <input

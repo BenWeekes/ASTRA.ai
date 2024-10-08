@@ -6,7 +6,7 @@ import './global.css'
 
 
 export const metadata: Metadata = {
-  title: "Amie 2024",
+  title: "Amy 2024",
   description: "Your virtual companion",
   appleWebApp: {
     capable: true,
