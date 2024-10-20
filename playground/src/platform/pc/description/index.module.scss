@@ -55,7 +55,7 @@
     }
 
     .btnText.disconnect {
-      color: var(--Error-400-T, #E95C7B);
+      color: var(--Error-400-T, #7caf66);
     }
 
     .loading {
@@ -71,7 +71,7 @@
 
   .btnConnect.disconnect {
     background: #181A1D;
-    border: 1px solid var(--Error-400-T, #E95C7B);
+    border: 1px solid var(--Error-400-T, #7caf66);
   }
 
 }
