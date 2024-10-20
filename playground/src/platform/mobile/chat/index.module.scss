@@ -19,7 +19,7 @@
 
     .text {
       margin-left: 4px;
-      color: var(--Grey-300, #FFC0CB);
+      color: var(--Grey-300, #E7F4E5);
       font-size: 14px;
       font-weight: 600;
       height: 40px;
@@ -70,10 +70,10 @@
 
 
   .btn {
-    color: var(--theme-color, #FFC0CB);
+    color: var(--theme-color, #E7F4E5);
 
     &:hover {
-      color: var(--theme-color, #FFC0CB) !important;
+      color: var(--theme-color, #E7F4E5) !important;
     }
   }
 }

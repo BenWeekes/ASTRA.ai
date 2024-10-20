@@ -10,7 +10,7 @@
   background: #181A1D;
 
   .title {
-    color: var(--Grey-300, #f40a64);
+    color: var(--Grey-300, #A3C856);
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -21,7 +21,7 @@
   .text {
     margin-left: 12px;
     flex: 1 1 auto;
-    color: var(--Grey-600, pink);
+    color: var(--Grey-600,  #E7F4E5);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -37,8 +37,8 @@
     gap: 8px;
     align-self: stretch;
     border-radius: 6px;
-    background: var(--theme-color, #f40a64);
-    border: 1px solid var(--theme-color, #f40a64);
+    background: var(--theme-color, #A3C856);
+    border: 1px solid var(--theme-color, #A3C856);
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     cursor: pointer;
     user-select: none;
