@@ -11,7 +11,7 @@
   align-items: center;
   border-radius: 20px;
   border: 1px solid #20272D;
-  background: linear-gradient(154deg, rgba(242, 7, 121, 0.16) 0%, rgba(19, 234, 7, 0) 30%), linear-gradient(153deg, rgba(31, 54, 97, 0.00) 53.75%, #eb0483 100%), rgba(8, 225, 88, 0.1);
+  background: linear-gradient(154deg, rgba(14, 113, 32, 0.16) 0%, rgba(19, 234, 7, 0) 30%), linear-gradient(153deg, rgba(31, 54, 97, 0.00) 53.75%, #98c13e 100%), rgba(8, 225, 88, 0.1);
   box-shadow: 0px 3.999px 48.988px 0px rgba(0, 7, 72, 0.12);
   backdrop-filter: blur(8.8px);
 
@@ -29,7 +29,7 @@
       cursor: pointer;
 
       .text {
-        color: var(--Grey-300, #f4b3d3);
+        color: var(--Grey-300, #E7F4E5);
         font-size: 12px;
         line-height: 150%;
       }
@@ -48,7 +48,7 @@
 
       .text {
         margin-top: 8px;
-        color: var(--Grey-300, #f2bcdb);
+        color: var(--Grey-300, #E7F4E5);
         text-align: center;
         font-size: 18px;
         font-weight: 500;
@@ -84,7 +84,7 @@
         gap: 8px;
         align-self: stretch;
         border-radius: 8px;
-        background: var(--primary-500-base, #f40a64);
+        background: var(--primary-500-base, #A3C856);
         box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
         cursor: pointer;
 
@@ -104,7 +104,7 @@
     .version {
       text-align: center;
       margin-top: 32px;
-      color: var(--Grey-600, #f7bfd9);
+      color: var(--Grey-600, #E7F4E5);
       line-height: 22px;
     }
 

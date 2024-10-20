@@ -11,7 +11,7 @@
   box-sizing: border-box;
 
   .title {
-    color: var(--Grey-300, #FFC0CB);
+    color: var(--Grey-300, #E7F4E5);
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -54,7 +54,7 @@
     }
 
     .btnText.disconnect {
-      color: var(--Error-400-T, #E95C7B);
+      color: var(--Error-400-T, #7caf66);
     }
 
     .loading {
@@ -70,7 +70,7 @@
 
   .btnConnect.disconnect {
     background: #181A1D;
-    border: 1px solid var(--Error-400-T, #E95C7B);
+    border: 1px solid var(--Error-400-T, #7caf66);
   }
 
 }

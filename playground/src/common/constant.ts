@@ -59,7 +59,7 @@ export const VOICE_OPTIONS: VoiceOptionItem[] = [
   }
 ]
 export const COLOR_LIST: ColorItem[] = [{
-  active: "#f40a64",
+  active: "#A3C856",
   default: "#143354"
 }, {
   active: "#563FD8",
