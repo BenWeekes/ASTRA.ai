@@ -48,10 +48,10 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
     "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
     "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />"
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
   ];
 
   const musicString = [

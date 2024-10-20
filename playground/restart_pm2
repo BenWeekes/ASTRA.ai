@@ -1,2 +1,3 @@
+npm run build
 pm2 delete astra-ui
 npm run pm2-start
