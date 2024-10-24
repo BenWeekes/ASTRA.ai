@@ -23,6 +23,8 @@ const Agent = (props: AgentProps) => {
   var dance = 0;
   var bg = 0;
   var music = 0;
+  var stretch = 0;
+  
 
 
   // Maintain a ref to the Trulience Avatar component to call methods on it.
@@ -48,23 +50,37 @@ const Agent = (props: AgentProps) => {
   ];
 
   const bgStrings = [
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
-    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURL+"/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/environments/ColorfulSunsetBeach.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/environments/PsychedelicMountains.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/environments/NorthernLightsForest.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
+    "<trl-load-environment immediate='true' gltf-model='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/environments/GraffitiWarehouse.glb' position='0 0 0' rotation='0 0 0' scale='1 1 1' />",
   ];
 
   const musicString = [
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/DanceMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/LoFiMusic.mp3' />",
-    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/music/LoFiMusic.mp3' />"
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/music/DanceMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/music/LoFiMusic.mp3' />",
+    "<trl-play-background-audio immediate='true' volume='0.1' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/music/LoFiMusic.mp3' />"
   ];
+
+  const stretchStrings = [
+    "<trl-anim immediate='true' type='core' id='StandStretch' />",
+    "<trl-anim immediate='true' type='core' id='FullBodyStretch' />"
+  ];
+
 
   function getDance() {
     let ret = animStrings[dance++]
     if (dance > animStrings.length - 1) {
       dance = 0;
+    }
+    return ret;
+  }
+
+  function getStretch() {
+    let ret = stretchStrings[stretch++]
+    if (stretch > stretchStrings.length - 1) {
+      stretch = 0;
     }
     return ret;
   }
@@ -98,8 +114,11 @@ const Agent = (props: AgentProps) => {
           let ssml = "";
           if (textItem.text.includes('SSML_DANCE')) {
             ssml = getDance();
+          }
+          else if (textItem.text.includes('SSML_STRETCH')) {
+            ssml = getStretch();
           } else if (textItem.text.includes('SSML_KISS')) {
-            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio='"+process.env.NEXT_PUBLIC_animationURL+"/assets/audio/female/kiss.mp3' />";
+            ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/female/kiss.mp3' />";
           } else if (textItem.text.includes('SSML_CHANGE_BG')) {
             ssml = getBG();
           } else if (textItem.text.includes('SSML_CHANGE_MUSIC')) {
@@ -154,7 +173,7 @@ const Agent = (props: AgentProps) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
       console.log("In callback loadProgress percent = ", progressDetails.percent);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURL+"/assets/characters/Amie_Rigged_cmp/Amie_Dances.glb' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPack+"' />");
       console.log("anims loaded in loadProgress");
 
       // set avatar loaded
