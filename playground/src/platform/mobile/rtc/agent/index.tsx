@@ -182,7 +182,8 @@ const Agent = (props: AgentProps) => {
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
       trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-disable-joystick />")
       console.log("In callback loadProgress percent = ", progressDetails.percent);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPack+"' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPackDance+"' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPackYoga+"' />");
       console.log("anims loaded in loadProgress");
 
       // set avatar loaded

@@ -25,8 +25,6 @@ const Agent = (props: AgentProps) => {
   var music = 0;
   var stretch = 0;
   
-
-
   // Maintain a ref to the Trulience Avatar component to call methods on it.
   const trulienceAvatarRef = useRef<TrulienceAvatar | null>(null);
 
@@ -67,7 +65,6 @@ const Agent = (props: AgentProps) => {
     "<trl-anim immediate='true' type='core' id='StandStretch' />",
     "<trl-anim immediate='true' type='core' id='FullBodyStretch' />"
   ];
-
 
   function getDance() {
     let ret = animStrings[dance++]
@@ -114,8 +111,7 @@ const Agent = (props: AgentProps) => {
           let ssml = "";
           if (textItem.text.includes('SSML_DANCE')) {
             ssml = getDance();
-          }
-          else if (textItem.text.includes('SSML_STRETCH')) {
+          } else if (textItem.text.includes('SSML_STRETCH')) {
             ssml = getStretch();
           } else if (textItem.text.includes('SSML_KISS')) {
             ssml = "<trl-anim immediate='true' type='aux' id='kiss' audio='"+process.env.NEXT_PUBLIC_animationURLBase+"/assets/audio/female/kiss.mp3' />";
@@ -173,7 +169,8 @@ const Agent = (props: AgentProps) => {
     console.log("In callback loadProgress progressDetails = ", progressDetails);
     if (trulienceAvatarRef.current && progressDetails && progressDetails.percent && progressDetails.percent === 1) {
       console.log("In callback loadProgress percent = ", progressDetails.percent);
-      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPack+"' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPackDance+"' />");
+      trulienceAvatarRef.current?.getTrulienceObject()?.sendMessageToAvatar("<trl-load animations='"+process.env.NEXT_PUBLIC_animationURLBase+process.env.NEXT_PUBLIC_animationPackYoga+"' />");
       console.log("anims loaded in loadProgress");
 
       // set avatar loaded
