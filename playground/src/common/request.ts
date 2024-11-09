@@ -1,5 +1,6 @@
 import { genUUID } from "./utils"
 import { Language } from "@/types"
+import axios from "axios"
 
 interface StartRequestConfig {
   channel: string
@@ -7,6 +8,7 @@ interface StartRequestConfig {
   graphName: string,
   language: Language,
   voiceType: "male" | "female"
+  properties: Record<string, any>
 }
 
 interface GenAgoraDataConfig {
@@ -15,7 +17,7 @@ interface GenAgoraDataConfig {
 }
 
 export const apiGenAgoraData = async (config: GenAgoraDataConfig) => {
-  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
   const url = `/api/token/generate`
   const { userId, channel } = config
   const data = {
@@ -23,67 +25,48 @@ export const apiGenAgoraData = async (config: GenAgoraDataConfig) => {
     uid: userId,
     channel_name: channel
   }
-  let resp: any = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  resp = (await resp.json()) || {}
+  let resp: any = await axios.post(url, data)
+  resp = (resp.data) || {}
   return resp
 }
 
 export const apiStartService = async (config: StartRequestConfig): Promise<any> => {
-  // look at app/api/agents/start/route.tsx for the server-side implementation
+  // look at app/apis/route.tsx for the server-side implementation
   const url = `/api/agents/start`
-  const { channel, userId, graphName, language, voiceType } = config
+  console.error('config', config);
+  const { channel, userId, graphName, language, voiceType, properties } = config
   const data = {
     request_id: genUUID(),
     channel_name: channel,
     user_uid: userId,
     graph_name: graphName,
     language,
-    voice_type: voiceType
+    voice_type: voiceType,
+    properties: { openai_chatgpt: { prompt: JSON.stringify(process.env.NEXT_PUBLIC_llmPrompt), greeting: JSON.stringify(process.env.NEXT_PUBLIC_llmGreeting) } },
   }
-  let resp: any = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  resp = (await resp.json()) || {}
+  console.error(data);
+  let resp: any = await axios.post(url, data)
+  resp = (resp.data) || {}
   return resp
 }
 
 export const apiStopService = async (channel: string) => {
-  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
   const url = `/api/agents/stop`
   const data = {
     request_id: genUUID(),
     channel_name: channel
   }
-  let resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  resp = (await resp.json()) || {}
+  let resp: any = await axios.post(url, data)
+  resp = (resp.data) || {}
   return resp
 }
 
 export const apiGetDocumentList = async () => {
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
   const url = `/api/vector/document/preset/list`
-  let resp: any = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  resp = (await resp.json()) || {}
+  let resp: any = await axios.get(url)
+  resp = (resp.data) || {}
   if (resp.code !== "0") {
     throw new Error(resp.msg)
   }
@@ -91,7 +74,7 @@ export const apiGetDocumentList = async () => {
 }
 
 export const apiUpdateDocument = async (options: { channel: string, collection: string, fileName: string }) => {
-  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
   const url = `/api/vector/document/update`
   const { channel, collection, fileName } = options
   const data = {
@@ -100,33 +83,54 @@ export const apiUpdateDocument = async (options: { channel: string, collection: 
     collection: collection,
     file_name: fileName
   }
-  let resp: any = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  resp = (await resp.json()) || {}
+  let resp: any = await axios.post(url, data)
+  resp = (resp.data) || {}
   return resp
 }
 
 
 // ping/pong 
 export const apiPing = async (channel: string) => {
-  // the request will be rewrite at next.config.mjs to send to $AGENT_SERVER_URL
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
   const url = `/api/agents/ping`
   const data = {
     request_id: genUUID(),
     channel_name: channel
   }
-  let resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  resp = (await resp.json()) || {}
+  let resp: any = await axios.post(url, data)
+  resp = (resp.data) || {}
+  return resp
+}
+
+export const apiGetGraphs = async () => {
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
+  const url = `/api/dev/v1/graphs`
+  let resp: any = await axios.get(url)
+  resp = (resp.data) || {}
+  return resp
+}
+
+export const apiGetExtensionMetadata = async () => {
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
+  const url = `/api/dev/v1/addons/extensions`
+  let resp: any = await axios.get(url)
+  resp = (resp.data) || {}
+  return resp
+}
+
+export const apiGetNodes = async (graphName: string) => {
+  // the request will be rewrite at middleware.tsx to send to $AGENT_SERVER_URL
+  const url = `/api/dev/v1/graphs/${graphName}/nodes`
+  let resp: any = await axios.get(url)
+  resp = (resp.data) || {}
+  return resp
+}
+
+
+export const apiReloadGraph = async (): Promise<any> => {
+  // look at app/apis/route.tsx for the server-side implementation
+  const url = `/api/dev/v1/packages/reload`
+  let resp: any = await axios.post(url)
+  resp = (resp.data) || {}
   return resp
 }

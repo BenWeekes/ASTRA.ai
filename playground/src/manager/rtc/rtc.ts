@@ -1,6 +1,5 @@
 "use client"
 
-import protoRoot from "@/protobuf/SttMessage_es6.js"
 import AgoraRTC, {
   IAgoraRTCClient,
   IMicrophoneAudioTrack,
@@ -11,6 +10,15 @@ import { ITextItem } from "@/types"
 import { AGEventEmitter } from "../events"
 import { RtcEvents, IUserTracks } from "./types"
 import { apiGenAgoraData } from "@/common"
+
+const TIMEOUT_MS = 5000; // Timeout for incomplete messages
+
+interface TextDataChunk {
+  message_id: string;
+  part_index: number;
+  total_parts: number;
+  content: string;
+}
 
 export class RtcManager extends AGEventEmitter<RtcEvents> {
   private _joined
@@ -34,43 +42,24 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       }
       const { appId, token } = data
       await this.client?.join(appId, channel, token, userId)
-     // window.bwc=this.client;
-      this._joined = true;
+      this._joined = true
     }
   }
 
-  async createVideoTrack() {
-    if( this.localTracks.videoTrack ) return;
-
+  async createTracks() {
     try {
       const videoTrack = await AgoraRTC.createCameraVideoTrack()
       this.localTracks.videoTrack = videoTrack
     } catch (err) {
       console.error("Failed to create video track", err)
-      return null
     }
-    this.emit("localTracksChanged", this.localTracks)
-    return this.localTracks.videoTrack
-  }
-
-  async createMicTrack() {
-    // Don't create if already created
-    if( this.localTracks.audioTrack ) return;
-
     try {
       const audioTrack = await AgoraRTC.createMicrophoneAudioTrack()
       this.localTracks.audioTrack = audioTrack
     } catch (err) {
       console.error("Failed to create audio track", err)
-      return null
     }
     this.emit("localTracksChanged", this.localTracks)
-    return this.localTracks.audioTrack
-  }
-
-  async createTracks() {
-    await this.createVideoTrack()
-    await this.createMicTrack()
   }
 
   async publish() {
@@ -85,10 +74,9 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       await this.client.publish(tracks)
     }
   }
-
   async connect({ channel, userId }: { channel: string; userId: number }) {
-    if(this._joined) return
-    
+    if (this._joined) return
+
     await this.createTracks()
     await this.join({
       channel,
@@ -102,7 +90,6 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
     this.localTracks?.videoTrack?.close()
     this.emit("localTracksChanged", {})
     this.emit("remoteUserChanged", null)
-
     if (this._joined) {
       await this.client?.leave()
     }
@@ -136,63 +123,107 @@ export class RtcManager extends AGEventEmitter<RtcEvents> {
       })
     })
     this.client.on("stream-message", (uid: UID, stream: any) => {
-      this._praseData(stream)
+      this._parseData(stream)
     })
   }
 
-  private _praseData(data: any): ITextItem | void {
-    // @ts-ignore
-    // const textstream = protoRoot.Agora.SpeechToText.lookup("Text").decode(data)
-    // if (!textstream) {
-    //   return console.warn("Prase data failed.")
-    // }
-    let decoder = new TextDecoder('utf-8')
-    let decodedMessage = decoder.decode(data)
+  private _parseData(data: any): ITextItem | void {
+    let decoder = new TextDecoder('utf-8');
+    let decodedMessage = decoder.decode(data);
 
-    const textstream = JSON.parse(decodedMessage)
+    console.log("[test] textstream raw data", decodedMessage);
 
-    console.log("[test] textstream raw data", JSON.stringify(textstream))
-    const { stream_id, is_final, text, text_ts, data_type } = textstream
-    let textStr: string = ""
-    let isFinal = false
-    const textItem: ITextItem = {} as ITextItem
-    textItem.uid = stream_id
-    textItem.time = text_ts
-    // switch (dataType) {
-    //   case "transcribe":
-    //     words.forEach((word: any) => {
-    //       textStr += word.text
-    //       if (word.isFinal) {
-    //         isFinal = true
-    //       }
-    //     })
-    textItem.dataType = "transcribe"
-    // textItem.language = culture
-    textItem.text = text
-    textItem.isFinal = is_final
-    this.emit("textChanged", textItem)
-    // break
-    // case "translate":
-    //   if (!trans?.length) {
-    //     return
-    //   }
-    //   trans.forEach((transItem: any) => {
-    //     textStr = transItem.texts.join("")
-    //     isFinal = !!transItem.isFinal
-    //     textItem.dataType = "translate"
-    //     textItem.language = transItem.lang
-    //     textItem.isFinal = isFinal
-    //     textItem.text = textStr
-    //     this.emit("textChanged", textItem)
-    //   })
-    //   break
+    // const { stream_id, is_final, text, text_ts, data_type, message_id, part_number, total_parts } = textstream;
+
+    // if (total_parts > 0) {
+    //   // If message is split, handle it accordingly
+    //   this._handleSplitMessage(message_id, part_number, total_parts, stream_id, is_final, text, text_ts);
+    // } else {
+    //   // If there is no message_id, treat it as a complete message
+    //   this._handleCompleteMessage(stream_id, is_final, text, text_ts);
     // }
+
+    this.handleChunk(decodedMessage);
+  }
+
+
+  private messageCache: { [key: string]: TextDataChunk[] } = {};
+
+  // Function to process received chunk via event emitter
+  handleChunk(formattedChunk: string) {
+    try {
+      // Split the chunk by the delimiter "|"
+      const [message_id, partIndexStr, totalPartsStr, content] = formattedChunk.split('|');
+
+      const part_index = parseInt(partIndexStr, 10);
+      const total_parts = totalPartsStr === '???' ? -1 : parseInt(totalPartsStr, 10); // -1 means total parts unknown
+
+      // Ensure total_parts is known before processing further
+      if (total_parts === -1) {
+        console.warn(`Total parts for message ${message_id} unknown, waiting for further parts.`);
+        return;
+      }
+
+      const chunkData: TextDataChunk = {
+        message_id,
+        part_index,
+        total_parts,
+        content,
+      };
+
+      // Check if we already have an entry for this message
+      if (!this.messageCache[message_id]) {
+        this.messageCache[message_id] = [];
+        // Set a timeout to discard incomplete messages
+        setTimeout(() => {
+          if (this.messageCache[message_id]?.length !== total_parts) {
+            console.warn(`Incomplete message with ID ${message_id} discarded`);
+            delete this.messageCache[message_id]; // Discard incomplete message
+          }
+        }, TIMEOUT_MS);
+      }
+
+      // Cache this chunk by message_id
+      this.messageCache[message_id].push(chunkData);
+
+      // If all parts are received, reconstruct the message
+      if (this.messageCache[message_id].length === total_parts) {
+        const completeMessage = this.reconstructMessage(this.messageCache[message_id]);
+        const { stream_id, is_final, text, text_ts } = JSON.parse(atob(completeMessage));
+        const textItem: ITextItem = {
+          uid: `${stream_id}`,
+          time: text_ts,
+          dataType: "transcribe",
+          text: text,
+          isFinal: is_final
+        };
+
+        if (text.trim().length > 0) {
+          this.emit("textChanged", textItem);
+        }
+
+
+        // Clean up the cache
+        delete this.messageCache[message_id];
+      }
+    } catch (error) {
+      console.error('Error processing chunk:', error);
+    }
+  }
+
+  // Function to reconstruct the full message from chunks
+  reconstructMessage(chunks: TextDataChunk[]): string {
+    // Sort chunks by their part index
+    chunks.sort((a, b) => a.part_index - b.part_index);
+
+    // Concatenate all chunks to form the full message
+    return chunks.map(chunk => chunk.content).join('');
   }
 
 
   _playAudio(audioTrack: IMicrophoneAudioTrack | IRemoteAudioTrack | undefined) {
     if (audioTrack && !audioTrack.isPlaying) {
-      //audioTrack.play()
+      // audioTrack.play()
     }
   }
 

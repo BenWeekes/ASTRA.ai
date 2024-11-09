@@ -1,7 +1,7 @@
 import { setAgentConnected } from "@/store/reducers/global"
 import {
 
-  DESCRIPTION, useAppDispatch, useAppSelector, VOICE_OPTIONS,apiPing, genUUID,
+  DESCRIPTION, useAppDispatch, useAppSelector, VOICE_OPTIONS, apiPing, genUUID,
   apiStartService, apiStopService,
   LANGUAGE_OPTIONS,
   GRAPH_OPTIONS,
@@ -34,6 +34,7 @@ const Description = () => {
   const graphName = useAppSelector(state => state.global.graphName)
   const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
   const [loading, setLoading] = useState(false)
+  const overridenProperties = useAppSelector(state => state.global.overridenProperties)
 
   useEffect(() => {
     if (channel) {
@@ -61,15 +62,15 @@ const Description = () => {
       message.success("Amie disconnected")
       stopPing()
     } else {
-
+      let properties: Record<string, any> = overridenProperties[graphName] || {}
       await rtcManager.connect({ channel, userId })
-      
       const res = await apiStartService({
         channel,
         userId,
         graphName,
         language,
-        voiceType
+        voiceType,
+        properties
       })
       const { code, msg } = res || {}
       if (code != 0) {
@@ -120,9 +121,9 @@ const Description = () => {
   const showLoading = loading || !isAvatarLoaded
 
   return <div className={styles.description}>
-  
+
     <span className={styles.text}>Amie is an intelligent companion powered by TEN</span>
-      {/*
+    {/*
     <CustomSelect className={styles.voiceSelect}
         disabled={agentConnected}
         value={voiceType}
@@ -130,19 +131,19 @@ const Description = () => {
         options={VOICE_OPTIONS} onChange={onVoiceChange}></CustomSelect>
    */}
     <span className={styles.left}>
-      </span>
-      <span className={styles.right}>
-        <Select className={styles.graphName}
-          disabled={agentConnected} options={GRAPH_OPTIONS}
-          value={graphName} onChange={onGraphNameChange}></Select>
-      
-          {/*
+    </span>
+    <span className={styles.right}>
+      <Select className={styles.graphName}
+        disabled={agentConnected} options={GRAPH_OPTIONS}
+        value={graphName} onChange={onGraphNameChange}></Select>
+
+      {/*
         <Select className={styles.languageSelect}
           disabled={agentConnected} options={LANGUAGE_OPTIONS}
           value={language} onChange={onLanguageChange}></Select>
          */}
-        {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
-      </span>
+      {isRagGraph(graphName) ? <PdfSelect></PdfSelect> : null}
+    </span>
 
 
     <span className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`} onClick={onClickConnect}>

@@ -21,6 +21,7 @@ const Description = () => {
   const voiceType = useAppSelector(state => state.global.voiceType)
   const graphName = useAppSelector(state => state.global.graphName)
   const isAvatarLoaded = useAppSelector(state => state.global.isAvatarLoaded)
+  const overridenProperties = useAppSelector(state => state.global.overridenProperties)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -49,13 +50,15 @@ const Description = () => {
       message.success("Amie disconnected")
       stopPing()
     } else {
+      let properties: Record<string, any> = overridenProperties[graphName] || {}
       await rtcManager.connect({ channel, userId })
       const res = await apiStartService({
         channel,
         userId,
         graphName,
         language,
-        voiceType
+        voiceType,
+        properties
       })
       const { code, msg } = res || {}
       if (code != 0) {
@@ -95,13 +98,13 @@ const Description = () => {
 
   return <div className={styles.description}>
     <span className={styles.title}>Aime 2024</span>
-    <span 
+    <span
       onClick={onClickConnect}
-      className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`}  
-      >
+      className={`${styles.btnConnect} ${agentConnected ? styles.disconnect : ''} ${!isAvatarLoaded ? styles.disabled : ''}`}
+    >
       <span className={`${styles.btnText} ${agentConnected ? styles.disconnect : ''}`}>
         {!isAvatarLoaded ? "Loading " : !agentConnected ? "Connect" : "Disconnect"}
-        { showLoading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}
+        {showLoading ? <LoadingOutlined className={styles.loading}></LoadingOutlined> : null}
       </span>
     </span>
   </div>

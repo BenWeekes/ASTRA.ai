@@ -13,6 +13,10 @@ export interface InitialState {
   graphName: string,
   isFullscreen: boolean,
   isAvatarLoaded: boolean,
+  graphs: string[],
+  extensions: Record<string, any>,
+  overridenProperties: Record<string, any>,
+  extensionMetadata: Record<string, any>
 }
 
 const getInitialState = (): InitialState => {
@@ -24,10 +28,13 @@ const getInitialState = (): InitialState => {
     language: "en-US",
     voiceType: "female",
     chatItems: [],
-    //graphName: "camera.va.openai.azure"
     isFullscreen: false,
-    graphName: "camera.va.openai.cartesia",
-    isAvatarLoaded: false
+    isAvatarLoaded: false,
+    graphName: "va_deepgram_openai_cartesia",
+    graphs: [],
+    extensions: {},
+    overridenProperties: {},
+    extensionMetadata: {},
   }
 }
 
