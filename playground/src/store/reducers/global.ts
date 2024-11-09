@@ -30,7 +30,7 @@ const getInitialState = (): InitialState => {
     chatItems: [],
     isFullscreen: false,
     isAvatarLoaded: false,
-    graphName: "agent_employee",
+    graphName: "agent_candidate",
     graphs: [],
     extensions: {},
     overridenProperties: {},
